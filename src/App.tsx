@@ -197,6 +197,17 @@ const DEFAULT_SETTINGS: AgentSettings = {
 
 const GOOGLE_SERVICE_TOOLS =[
   {
+    name: 'fetch_url_content',
+    description: 'Fetch and read the text content of a URL or webpage. Use this when the user asks you to read a specific website or link.',
+    parameters: {
+      type: Type.OBJECT,
+      properties: {
+        url: { type: Type.STRING, description: 'The exact URL to fetch' }
+      },
+      required: ['url']
+    }
+  },
+  {
     name: 'read_knowledge_base',
     description: 'Read the contents of the user\'s uploaded custom Knowledge Base documents. Use this when the user asks about their custom data, projects, study notes, or business context.',
     parameters: {
@@ -244,7 +255,7 @@ const GOOGLE_SERVICE_TOOLS =[
   },
   {
     name: 'create_meeting_minutes',
-    description: 'Generate stunning HTML meeting minutes. Use this especially after analyzing a meeting transcript.',
+    description: 'Generate FULL PRODUCTION-READY HTML meeting minutes. Ensure elegant styling, comprehensive details, and avoid minimal samples.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -261,7 +272,7 @@ const GOOGLE_SERVICE_TOOLS =[
   },
   {
     name: 'create_invoice_document',
-    description: 'Generate a professional HTML invoice with auto-calculations. Save to drive and optionally email.',
+    description: 'Generate a FULL PRODUCTION-READY professional HTML invoice with realistic mock data and beautiful styling. Never output a stripped-down skeleton.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -272,12 +283,12 @@ const GOOGLE_SERVICE_TOOLS =[
         taxRate: { type: Type.NUMBER, description: 'Tax percentage, e.g. 5 for 5%.' },
         emailTo: { type: Type.STRING }
       },
-      required: ['clientName', 'items']
+      required:['clientName', 'items']
     }
   },
   {
     name: 'generate_data_dashboard',
-    description: 'Generate a standalone interactive HTML data dashboard using Chart.js.',
+    description: 'Generate a standalone interactive HTML data dashboard using Chart.js. Must be fully styled, responsive, and visually stunning.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -298,12 +309,12 @@ const GOOGLE_SERVICE_TOOLS =[
         title: { type: Type.STRING },
         tasks: { type: Type.STRING, description: 'Mermaid gantt syntax lines. E.g. "Section 1\\nTask A :a1, 2023-01-01, 30d\\nTask B :after a1, 20d"' }
       },
-      required: ['title', 'tasks']
+      required:['title', 'tasks']
     }
   },
   {
     name: 'render_web_artifact',
-    description: 'Create and render any complete one-file HTML/CSS/JS artifact: animated slides, Three.js showcases, forms, landing pages, calculators, documents, prototypes, demos. The frontend saves it to chat as downloadable HTML.',
+    description: 'Create and render ANY complete one-file HTML/CSS/JS artifact: forms, landing pages, calculators, documents, prototypes. You MUST output a FULL PRODUCTION-READY code block, never a basic sample. Ensure beautiful UI, comprehensive CSS, and realistic placeholder data.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -322,7 +333,7 @@ const GOOGLE_SERVICE_TOOLS =[
         },
         html: {
           type: Type.STRING,
-          description: 'Complete standalone HTML file. Must include DOCTYPE, html, head, style, body, and script if needed. Must be directly openable in browser.',
+          description: 'Complete standalone HTML file. Must include DOCTYPE, html, head, style, body, and script if needed. Must be highly styled and fully implemented.',
         },
         saveToDrive: { type: Type.BOOLEAN, description: 'If true, upload the HTML artifact to the user drive.' },
         emailTo: { type: Type.STRING, description: 'Optional email address to send the HTML artifact to. Use current_user if requested.' },
@@ -456,7 +467,7 @@ const GOOGLE_SERVICE_TOOLS =[
         mimeType: { type: Type.STRING, description: 'File MIME type.' },
         folderId: { type: Type.STRING, description: 'Optional folder id.' },
       },
-      required: ['fileName', 'content'],
+      required:['fileName', 'content'],
     },
   },
   {
@@ -498,7 +509,7 @@ const GOOGLE_SERVICE_TOOLS =[
   {
     name: 'create_contract_document',
     description:
-      'Create a STUNNING HTML contract document, save it as a file in the user drive, optionally email it, and return a downloadable visually rich template in chat.',
+      'Create a STUNNING, PRODUCTION-READY HTML contract document. You must generate a fully-featured, beautifully styled legal contract. Never use a minimal sample layout.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -511,7 +522,7 @@ const GOOGLE_SERVICE_TOOLS =[
         terms: { type: Type.STRING, description: 'Important terms, scope, payment, obligations, duration, termination, confidentiality, etc.' },
         emailTo: { type: Type.STRING, description: 'Optional email address to send the stunning HTML contract to. Use current_user if requested.' },
       },
-      required: ['title', 'contractType', 'partyA', 'partyB', 'terms'],
+      required:['title', 'contractType', 'partyA', 'partyB', 'terms'],
     },
   },
 ];
@@ -1044,7 +1055,7 @@ function LimeVoiceOrb({
     bandsRef.current = speakerBands;
     activeRef.current = isActive;
     speakingRef.current = isAgentSpeaking;
-  }, [isActive, isAgentSpeaking, speakerBands, speakerLevel]);
+  },[isActive, isAgentSpeaking, speakerBands, speakerLevel]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1310,7 +1321,7 @@ function MeetingRecorderModal({
 }) {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [duration, setDuration] = useState(0);
+  const[duration, setDuration] = useState(0);
   const[transcript, setTranscript] = useState('');
   
   const recognitionRef = useRef<any>(null);
@@ -1329,7 +1340,7 @@ function MeetingRecorderModal({
       const timer = setInterval(() => setDuration(d => d + 1), 1000);
       return () => clearInterval(timer);
     }
-  }, [isRecording]);
+  },[isRecording]);
 
   const startRecording = async () => {
     try {
@@ -1440,7 +1451,7 @@ function MeetingRecorderModal({
                <div className="relative flex items-center justify-center w-48 h-48 mb-10">
                  {isRecording && (
                    <motion.div
-                     animate={{ scale: [1, 1 + micLevel * 0.6, 1], opacity:[0.3, 0.7, 0.3] }}
+                     animate={{ scale:[1, 1 + micLevel * 0.6, 1], opacity:[0.3, 0.7, 0.3] }}
                      transition={{ duration: 0.1, repeat: Infinity }}
                      className="absolute inset-0 bg-lime-300/30 rounded-full blur-2xl"
                    />
@@ -1492,14 +1503,14 @@ function MeetingRecorderModal({
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [settings, setSettings] = useState<AgentSettings>(DEFAULT_SETTINGS);
-  const [authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
-  const [authName, setAuthName] = useState('');
+  const[settings, setSettings] = useState<AgentSettings>(DEFAULT_SETTINGS);
+  const[authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
+  const[authName, setAuthName] = useState('');
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
   const [authConfirmPassword, setAuthConfirmPassword] = useState('');
   const[authBusy, setAuthBusy] = useState(false);
-  const [authMessage, setAuthMessage] = useState<{ type: 'error' | 'success' | 'info'; text: string } | null>(null);
+  const[authMessage, setAuthMessage] = useState<{ type: 'error' | 'success' | 'info'; text: string } | null>(null);
   const[showAuthPassword, setShowAuthPassword] = useState(false);
   const [showAuthConfirmPassword, setShowAuthConfirmPassword] = useState(false);
 
@@ -1869,23 +1880,23 @@ function BeatriceAgent({
 }) {
   const [isActive, setIsActive] = useState(false);
   const [connecting, setConnecting] = useState(false);
-  const [isAgentSpeaking, setIsAgentSpeaking] = useState(false);
+  const[isAgentSpeaking, setIsAgentSpeaking] = useState(false);
   const [micLevel, setMicLevel] = useState(0);
   const[micBands, setMicBands] = useState<number[]>(Array(20).fill(0));
   const[speakerLevel, setSpeakerLevel] = useState(0);
-  const [speakerBands, setSpeakerBands] = useState<number[]>(Array(20).fill(0));
+  const[speakerBands, setSpeakerBands] = useState<number[]>(Array(20).fill(0));
   const [tasks, setTasks] = useState<ActionTask[]>([]);
-  const [historyContext, setHistoryContext] = useState<string>('');
+  const[historyContext, setHistoryContext] = useState<string>('');
   const[historyMsgs, setHistoryMsgs] = useState<ChatMessage[]>([]);
   const [currentTranscript, setCurrentTranscript] = useState<{ role: 'user' | 'model'; text: string } | null>(null);
 
   const[isMuted, setIsMuted] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
-  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
-  const [showSidebar, setShowSidebar] = useState(false);
+  const[facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
+  const[showSidebar, setShowSidebar] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showMeetingRecorder, setShowMeetingRecorder] = useState(false);
-  const [chatInput, setChatInput] = useState('');
+  const[chatInput, setChatInput] = useState('');
   const [settings, setSettings] = useState<AgentSettings>({ ...DEFAULT_SETTINGS, ...initialSettings });
 
   const aiRef = useRef<GoogleGenAI | null>(null);
@@ -2287,6 +2298,25 @@ function BeatriceAgent({
 
     try {
       switch (toolName) {
+        case 'fetch_url_content': {
+          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(args.url)}`;
+          const response = await fetch(proxyUrl);
+          const data = await response.json();
+          if (!data.contents) throw new Error("Could not retrieve contents from the URL.");
+          
+          const doc = new DOMParser().parseFromString(data.contents, 'text/html');
+          const text = doc.body.textContent || "";
+          const cleanText = text.replace(/\s+/g, ' ').trim().slice(0, 15000);
+          
+          return { 
+            toolName, 
+            executedAt, 
+            status: 'completed', 
+            url: args.url, 
+            contentPreview: cleanText || "No readable text found on the page." 
+          };
+        }
+
         case 'read_knowledge_base': {
           return { 
             toolName, 
@@ -2541,6 +2571,23 @@ function BeatriceAgent({
           }
           
           const result = await googleJson(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(`name contains '${escaped}' and trashed = false${mimeClause}`)}&fields=files(id,name,mimeType,webViewLink,webContentLink,modifiedTime,size)&pageSize=${limit}`);
+          return { toolName, executedAt, status: 'completed', files: result.files ||
+        case 'drive_search': {
+          const q = args.query || ''; 
+          const limit = Math.min(Number(args.limit || 10), 50); 
+          const escaped = q.replace(/'/g, "\\'"); 
+          let mimeClause = '';
+          
+          if (args.fileType) {
+            const type = String(args.fileType).toLowerCase();
+            if (type.includes('doc')) mimeClause = " and mimeType = 'application/vnd.google-apps.document'";
+            if (type.includes('sheet')) mimeClause = " and mimeType = 'application/vnd.google-apps.spreadsheet'";
+            if (type.includes('slide') || type.includes('presentation')) mimeClause = " and mimeType = 'application/vnd.google-apps.presentation'";
+            if (type.includes('pdf')) mimeClause = " and mimeType = 'application/pdf'";
+            if (type.includes('html')) mimeClause = " and mimeType = 'text/html'";
+          }
+          
+          const result = await googleJson(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(`name contains '${escaped}' and trashed = false${mimeClause}`)}&fields=files(id,name,mimeType,webViewLink,webContentLink,modifiedTime,size)&pageSize=${limit}`);
           return { toolName, executedAt, status: 'completed', files: result.files ||[] };
         }
 
@@ -2701,7 +2748,10 @@ function BeatriceAgent({
           systemInstruction,
           inputAudioTranscription: {},
           outputAudioTranscription: {},
-          tools:[{ functionDeclarations: GOOGLE_SERVICE_TOOLS }],
+          tools:[
+            { googleSearch: {} }, // Enables Live Google Search Grounding natively
+            { functionDeclarations: GOOGLE_SERVICE_TOOLS }
+          ],
         },
         callbacks: {
           onopen: () => console.log('Live session opened.'),
@@ -3058,6 +3108,57 @@ function BeatriceAgent({
         img.src = e.target?.result as string;
       };
       reader.readAsDataURL(file);
+    } else if (fileType.startsWith('video/')) {
+      // SMART VIDEO UPLOAD HANDLING: Extracts a keyframe and sends to Gemini Vision silently
+      const video = document.createElement('video');
+      const objectUrl = URL.createObjectURL(file);
+      video.src = objectUrl;
+      video.muted = true;
+      video.playsInline = true;
+
+      video.onloadedmetadata = () => {
+        // Try to grab a frame from the middle of the video or at 1 second
+        video.currentTime = Math.min(1, video.duration / 2);
+      };
+
+      video.onseeked = async () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 500;
+        const scaleSize = Math.min(1, MAX_WIDTH / video.videoWidth);
+        canvas.width = video.videoWidth * scaleSize;
+        canvas.height = video.videoHeight * scaleSize;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        const base64Data = dataUrl.split(',')[1];
+        
+        saveMessage('user', `[Attached Video: ${safeName}]`, {
+          fileName: safeName,
+          fileType,
+          fileDataUrl: dataUrl // Display thumbnail in chat
+        });
+        
+        updateLiveTranscript('user', `Attached Video: ${safeName}`, 3000);
+        
+        if (sessionRef.current && aiRef.current) {
+          try {
+            const result = await aiRef.current.models.generateContent({
+              model: 'gemini-2.5-flash',
+              contents:[
+                "Describe this video frame precisely, accurately, and in high detail. Pay attention to action, context, setting, and subjects. Do not make anything up.",
+                { inlineData: { mimeType: 'image/jpeg', data: base64Data } }
+              ]
+            });
+            
+            const accurateDescription = result.text;
+            sendTextToLive(`[SYSTEM NOTIFICATION]: The user just uploaded a video named ${safeName}. Here is the verified, exact visual description of a keyframe from the middle of the video: "${accurateDescription}". Please respond to the user about this video naturally.`);
+          } catch (err) {
+            sendTextToLive(`[SYSTEM NOTIFICATION]: The user uploaded a video named ${safeName}, but the visual processing failed. Tell the user you can't see the video clearly and ask them to describe it.`);
+          }
+        }
+        URL.revokeObjectURL(objectUrl);
+      };
     } else if (fileType.startsWith('text/') || safeName.endsWith('.txt') || safeName.endsWith('.md') || safeName.endsWith('.csv') || safeName.endsWith('.json')) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -3083,7 +3184,7 @@ function BeatriceAgent({
       updateLiveTranscript('user', `Attached File: ${safeName}`, 3000);
       
       if (sessionRef.current) {
-        sendTextToLive(`${settings.userName} attached a file named "${safeName}" with type "${fileType}". Acknowledge it normally. Say you might need a specific tool to read this format if it's not text or an image.`);
+        sendTextToLive(`${settings.userName} attached a file named "${safeName}" with type "${fileType}". Acknowledge it normally. Say you might need a specific tool to read this format if it's not text, image, or video.`);
       }
     }
   };
@@ -3156,7 +3257,7 @@ ${transcript}
 </transcript>
 
 Tasks:
-1. Generate a comprehensive meeting minutes document using the 'create_meeting_minutes' tool.
+1. Generate a comprehensive meeting minutes document using the 'create_meeting_minutes' tool. Make it FULL PRODUCTION grade.
 2. If there are explicit tasks or follow-ups assigned to the user (${settings.userName}), use the 'tasks_create' tool to add them to their schedule.
 3. Return a brief conversational summary of what you did.`;
 
@@ -3164,7 +3265,7 @@ Tasks:
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
-                tools: [{ functionDeclarations: GOOGLE_SERVICE_TOOLS }],
+                tools:[{ functionDeclarations: GOOGLE_SERVICE_TOOLS }],
                 systemInstruction: "You are Beatrice, an executive assistant. Execute tools precisely as requested to support your boss."
             }
         });
