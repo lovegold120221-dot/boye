@@ -238,7 +238,7 @@ const GOOGLE_SERVICE_TOOLS =[
         origin: { type: Type.STRING, description: 'Starting location.' },
         destination: { type: Type.STRING, description: 'Target destination.' }
       },
-      required: ['origin', 'destination']
+      required:['origin', 'destination']
     }
   },
   {
@@ -267,7 +267,7 @@ const GOOGLE_SERVICE_TOOLS =[
         actionItems: { type: Type.STRING, description: 'HTML formatted list of action items.' },
         emailTo: { type: Type.STRING, description: 'Optional email address.' }
       },
-      required: ['meetingTitle', 'summary']
+      required:['meetingTitle', 'summary']
     }
   },
   {
@@ -283,7 +283,7 @@ const GOOGLE_SERVICE_TOOLS =[
         taxRate: { type: Type.NUMBER, description: 'Tax percentage, e.g. 5 for 5%.' },
         emailTo: { type: Type.STRING }
       },
-      required:['clientName', 'items']
+      required: ['clientName', 'items']
     }
   },
   {
@@ -295,9 +295,9 @@ const GOOGLE_SERVICE_TOOLS =[
         title: { type: Type.STRING },
         chartType: { type: Type.STRING, description: 'bar, line, or pie' },
         labels: { type: Type.STRING, description: 'Comma separated labels, e.g. Jan,Feb,Mar' },
-        datasets: { type: Type.STRING, description: 'JSON array of datasets, e.g.[{"label":"Sales", "data":[10,20,30]}]' }
+        datasets: { type: Type.STRING, description: 'JSON array of datasets, e.g. [{"label":"Sales", "data":[10,20,30]}]' }
       },
-      required:['title', 'labels', 'datasets']
+      required: ['title', 'labels', 'datasets']
     }
   },
   {
@@ -309,7 +309,7 @@ const GOOGLE_SERVICE_TOOLS =[
         title: { type: Type.STRING },
         tasks: { type: Type.STRING, description: 'Mermaid gantt syntax lines. E.g. "Section 1\\nTask A :a1, 2023-01-01, 30d\\nTask B :after a1, 20d"' }
       },
-      required:['title', 'tasks']
+      required: ['title', 'tasks']
     }
   },
   {
@@ -338,7 +338,7 @@ const GOOGLE_SERVICE_TOOLS =[
         saveToDrive: { type: Type.BOOLEAN, description: 'If true, upload the HTML artifact to the user drive.' },
         emailTo: { type: Type.STRING, description: 'Optional email address to send the HTML artifact to. Use current_user if requested.' },
       },
-      required:['title', 'html'],
+      required: ['title', 'html'],
     },
   },
   {
@@ -440,7 +440,7 @@ const GOOGLE_SERVICE_TOOLS =[
         fileType: { type: Type.STRING, description: 'Optional file type filter.' },
         limit: { type: Type.NUMBER, description: 'Maximum number of results.' },
       },
-      required: ['query'],
+      required:['query'],
     },
   },
   {
@@ -467,7 +467,7 @@ const GOOGLE_SERVICE_TOOLS =[
         mimeType: { type: Type.STRING, description: 'File MIME type.' },
         folderId: { type: Type.STRING, description: 'Optional folder id.' },
       },
-      required:['fileName', 'content'],
+      required: ['fileName', 'content'],
     },
   },
   {
@@ -877,8 +877,8 @@ function buildDashboardHtml(args: any) {
     new Chart(document.getElementById('myChart'), {
       type: '${args.chartType || 'bar'}',
       data: {
-        labels: ${JSON.stringify(labels && labels.length ? labels : ['A','B','C'])},
-        datasets: ${JSON.stringify(datasets && datasets.length ? datasets : [{label: 'Data', data:[1,2,3]}])}
+        labels: ${JSON.stringify(labels && labels.length ? labels :['A','B','C'])},
+        datasets: ${JSON.stringify(datasets && datasets.length ? datasets :[{label: 'Data', data: [1,2,3]}])}
       },
       options: { responsive: true, plugins: { legend: { position: 'top' } } }
     });
@@ -1055,7 +1055,7 @@ function LimeVoiceOrb({
     bandsRef.current = speakerBands;
     activeRef.current = isActive;
     speakingRef.current = isAgentSpeaking;
-  },[isActive, isAgentSpeaking, speakerBands, speakerLevel]);
+  }, [isActive, isAgentSpeaking, speakerBands, speakerLevel]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1320,9 +1320,9 @@ function MeetingRecorderModal({
   onProcess: (transcript: string) => Promise<void>;
 }) {
   const [isRecording, setIsRecording] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const[duration, setDuration] = useState(0);
-  const[transcript, setTranscript] = useState('');
+  const[isProcessing, setIsProcessing] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [transcript, setTranscript] = useState('');
   
   const recognitionRef = useRef<any>(null);
   const isRecordingRef = useRef(false);
@@ -1340,7 +1340,7 @@ function MeetingRecorderModal({
       const timer = setInterval(() => setDuration(d => d + 1), 1000);
       return () => clearInterval(timer);
     }
-  },[isRecording]);
+  }, [isRecording]);
 
   const startRecording = async () => {
     try {
@@ -1451,7 +1451,7 @@ function MeetingRecorderModal({
                <div className="relative flex items-center justify-center w-48 h-48 mb-10">
                  {isRecording && (
                    <motion.div
-                     animate={{ scale:[1, 1 + micLevel * 0.6, 1], opacity:[0.3, 0.7, 0.3] }}
+                     animate={{ scale: [1, 1 + micLevel * 0.6, 1], opacity:[0.3, 0.7, 0.3] }}
                      transition={{ duration: 0.1, repeat: Infinity }}
                      className="absolute inset-0 bg-lime-300/30 rounded-full blur-2xl"
                    />
@@ -1503,16 +1503,16 @@ function MeetingRecorderModal({
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const[settings, setSettings] = useState<AgentSettings>(DEFAULT_SETTINGS);
-  const[authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
-  const[authName, setAuthName] = useState('');
+  const [settings, setSettings] = useState<AgentSettings>(DEFAULT_SETTINGS);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
+  const [authName, setAuthName] = useState('');
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
   const [authConfirmPassword, setAuthConfirmPassword] = useState('');
   const[authBusy, setAuthBusy] = useState(false);
-  const[authMessage, setAuthMessage] = useState<{ type: 'error' | 'success' | 'info'; text: string } | null>(null);
-  const[showAuthPassword, setShowAuthPassword] = useState(false);
-  const [showAuthConfirmPassword, setShowAuthConfirmPassword] = useState(false);
+  const [authMessage, setAuthMessage] = useState<{ type: 'error' | 'success' | 'info'; text: string } | null>(null);
+  const [showAuthPassword, setShowAuthPassword] = useState(false);
+  const[showAuthConfirmPassword, setShowAuthConfirmPassword] = useState(false);
 
   useEffect(() => {
     const fontId = 'beatrice-roboto-font';
@@ -1878,25 +1878,25 @@ function BeatriceAgent({
   onLogout: () => void; 
   initialSettings: AgentSettings; 
 }) {
-  const [isActive, setIsActive] = useState(false);
+  const[isActive, setIsActive] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const[isAgentSpeaking, setIsAgentSpeaking] = useState(false);
   const [micLevel, setMicLevel] = useState(0);
-  const[micBands, setMicBands] = useState<number[]>(Array(20).fill(0));
-  const[speakerLevel, setSpeakerLevel] = useState(0);
-  const[speakerBands, setSpeakerBands] = useState<number[]>(Array(20).fill(0));
+  const [micBands, setMicBands] = useState<number[]>(Array(20).fill(0));
+  const [speakerLevel, setSpeakerLevel] = useState(0);
+  const [speakerBands, setSpeakerBands] = useState<number[]>(Array(20).fill(0));
   const [tasks, setTasks] = useState<ActionTask[]>([]);
-  const[historyContext, setHistoryContext] = useState<string>('');
+  const [historyContext, setHistoryContext] = useState<string>('');
   const[historyMsgs, setHistoryMsgs] = useState<ChatMessage[]>([]);
   const [currentTranscript, setCurrentTranscript] = useState<{ role: 'user' | 'model'; text: string } | null>(null);
 
   const[isMuted, setIsMuted] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
-  const[facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
-  const[showSidebar, setShowSidebar] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
+  const [showSidebar, setShowSidebar] = useState(false);
+  const[showProfile, setShowProfile] = useState(false);
   const [showMeetingRecorder, setShowMeetingRecorder] = useState(false);
-  const[chatInput, setChatInput] = useState('');
+  const [chatInput, setChatInput] = useState('');
   const [settings, setSettings] = useState<AgentSettings>({ ...DEFAULT_SETTINGS, ...initialSettings });
 
   const aiRef = useRef<GoogleGenAI | null>(null);
@@ -1927,7 +1927,7 @@ function BeatriceAgent({
   
   useEffect(() => { 
     isActiveRef.current = isActive; 
-  }, [isActive]);
+  },[isActive]);
 
   useEffect(() => {
     let wakeLock: any = null;
@@ -2226,7 +2226,7 @@ function BeatriceAgent({
 
   const uploadTextFileToDrive = async (fileName: string, content: string, mimeType = 'text/plain', folderId?: string) => {
     const metadata: any = { name: fileName }; 
-    if (folderId) metadata.parents =[folderId];
+    if (folderId) metadata.parents = [folderId];
     
     const boundary = `boundary_${Date.now()}`;
     const multipartBody = 
@@ -2299,22 +2299,35 @@ function BeatriceAgent({
     try {
       switch (toolName) {
         case 'fetch_url_content': {
-          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(args.url)}`;
-          const response = await fetch(proxyUrl);
-          const data = await response.json();
-          if (!data.contents) throw new Error("Could not retrieve contents from the URL.");
-          
-          const doc = new DOMParser().parseFromString(data.contents, 'text/html');
-          const text = doc.body.textContent || "";
-          const cleanText = text.replace(/\s+/g, ' ').trim().slice(0, 15000);
-          
-          return { 
-            toolName, 
-            executedAt, 
-            status: 'completed', 
-            url: args.url, 
-            contentPreview: cleanText || "No readable text found on the page." 
-          };
+          try {
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(args.url)}`;
+            const response = await fetch(proxyUrl);
+            const data = await response.json();
+            
+            if (!data.contents) throw new Error("Could not retrieve text from this URL. It might be blocking automated access.");
+            
+            const doc = new DOMParser().parseFromString(data.contents, 'text/html');
+            const text = doc.body?.textContent || "";
+            const cleanText = text.replace(/\s+/g, ' ').trim().slice(0, 15000);
+            
+            if (!cleanText) throw new Error("No readable text found on the page.");
+
+            return { 
+              toolName, 
+              executedAt, 
+              status: 'completed', 
+              url: args.url, 
+              contentPreview: cleanText 
+            };
+          } catch (error: any) {
+            return {
+              toolName,
+              executedAt,
+              status: 'failed',
+              url: args.url,
+              error: `Failed to fetch URL. Tell the user the website might be blocking access or is unavailable. Error: ${error.message}`
+            };
+          }
         }
 
         case 'read_knowledge_base': {
@@ -2571,23 +2584,6 @@ function BeatriceAgent({
           }
           
           const result = await googleJson(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(`name contains '${escaped}' and trashed = false${mimeClause}`)}&fields=files(id,name,mimeType,webViewLink,webContentLink,modifiedTime,size)&pageSize=${limit}`);
-          return { toolName, executedAt, status: 'completed', files: result.files ||
-        case 'drive_search': {
-          const q = args.query || ''; 
-          const limit = Math.min(Number(args.limit || 10), 50); 
-          const escaped = q.replace(/'/g, "\\'"); 
-          let mimeClause = '';
-          
-          if (args.fileType) {
-            const type = String(args.fileType).toLowerCase();
-            if (type.includes('doc')) mimeClause = " and mimeType = 'application/vnd.google-apps.document'";
-            if (type.includes('sheet')) mimeClause = " and mimeType = 'application/vnd.google-apps.spreadsheet'";
-            if (type.includes('slide') || type.includes('presentation')) mimeClause = " and mimeType = 'application/vnd.google-apps.presentation'";
-            if (type.includes('pdf')) mimeClause = " and mimeType = 'application/pdf'";
-            if (type.includes('html')) mimeClause = " and mimeType = 'text/html'";
-          }
-          
-          const result = await googleJson(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(`name contains '${escaped}' and trashed = false${mimeClause}`)}&fields=files(id,name,mimeType,webViewLink,webContentLink,modifiedTime,size)&pageSize=${limit}`);
           return { toolName, executedAt, status: 'completed', files: result.files ||[] };
         }
 
@@ -2749,7 +2745,7 @@ function BeatriceAgent({
           inputAudioTranscription: {},
           outputAudioTranscription: {},
           tools:[
-            { googleSearch: {} }, // Enables Live Google Search Grounding natively
+            { googleSearch: {} }, // Natively enables Live Web Search Grounding
             { functionDeclarations: GOOGLE_SERVICE_TOOLS }
           ],
         },
@@ -3108,6 +3104,7 @@ function BeatriceAgent({
         img.src = e.target?.result as string;
       };
       reader.readAsDataURL(file);
+
     } else if (fileType.startsWith('video/')) {
       // SMART VIDEO UPLOAD HANDLING: Extracts a keyframe and sends to Gemini Vision silently
       const video = document.createElement('video');
@@ -3115,34 +3112,35 @@ function BeatriceAgent({
       video.src = objectUrl;
       video.muted = true;
       video.playsInline = true;
+      video.crossOrigin = "anonymous";
 
-      video.onloadedmetadata = () => {
-        // Try to grab a frame from the middle of the video or at 1 second
+      video.onloadeddata = () => {
+        // Seek to 1 second in or halfway, whichever is shorter, to avoid black frames at 0s
         video.currentTime = Math.min(1, video.duration / 2);
       };
 
       video.onseeked = async () => {
-        const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 500;
-        const scaleSize = Math.min(1, MAX_WIDTH / video.videoWidth);
-        canvas.width = video.videoWidth * scaleSize;
-        canvas.height = video.videoHeight * scaleSize;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-        const base64Data = dataUrl.split(',')[1];
-        
-        saveMessage('user', `[Attached Video: ${safeName}]`, {
-          fileName: safeName,
-          fileType,
-          fileDataUrl: dataUrl // Display thumbnail in chat
-        });
-        
-        updateLiveTranscript('user', `Attached Video: ${safeName}`, 3000);
-        
-        if (sessionRef.current && aiRef.current) {
-          try {
+        try {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 500;
+          const scaleSize = Math.min(1, MAX_WIDTH / video.videoWidth);
+          canvas.width = video.videoWidth * scaleSize;
+          canvas.height = video.videoHeight * scaleSize;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+          
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          const base64Data = dataUrl.split(',')[1];
+          
+          saveMessage('user', `[Attached Video: ${safeName}]`, {
+            fileName: safeName,
+            fileType,
+            fileDataUrl: dataUrl // Display thumbnail in chat
+          });
+          
+          updateLiveTranscript('user', `Attached Video: ${safeName}`, 3000);
+          
+          if (sessionRef.current && aiRef.current) {
             const result = await aiRef.current.models.generateContent({
               model: 'gemini-2.5-flash',
               contents:[
@@ -3153,12 +3151,22 @@ function BeatriceAgent({
             
             const accurateDescription = result.text;
             sendTextToLive(`[SYSTEM NOTIFICATION]: The user just uploaded a video named ${safeName}. Here is the verified, exact visual description of a keyframe from the middle of the video: "${accurateDescription}". Please respond to the user about this video naturally.`);
-          } catch (err) {
-            sendTextToLive(`[SYSTEM NOTIFICATION]: The user uploaded a video named ${safeName}, but the visual processing failed. Tell the user you can't see the video clearly and ask them to describe it.`);
           }
+        } catch (err) {
+          sendTextToLive(`[SYSTEM NOTIFICATION]: The user uploaded a video named ${safeName}, but the visual processing failed. Tell the user you can't see the video clearly and ask them to describe it.`);
+        } finally {
+          URL.revokeObjectURL(objectUrl);
+          video.remove();
         }
-        URL.revokeObjectURL(objectUrl);
       };
+
+      video.onerror = () => {
+        saveMessage('user', `[Attached Video: ${safeName}]`, { fileName: safeName, fileType });
+        sendTextToLive(`[SYSTEM NOTIFICATION]: The user uploaded a video named ${safeName}, but the browser could not read the format. Ask the user to describe it.`);
+        URL.revokeObjectURL(objectUrl);
+        video.remove();
+      };
+
     } else if (fileType.startsWith('text/') || safeName.endsWith('.txt') || safeName.endsWith('.md') || safeName.endsWith('.csv') || safeName.endsWith('.json')) {
       const reader = new FileReader();
       reader.onload = (e) => {
