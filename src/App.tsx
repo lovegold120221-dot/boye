@@ -95,7 +95,7 @@ const EBURON_LOGO_URL = 'https://eburon.ai/icon-eburon.svg';
 const PRODUCT_BRAND = 'VEP';
 const PRODUCT_FULL_NAME = 'Virtual Employee Persona';
 
-const GEMINI_LIVE_VOICE_OPTIONS = [
+const GEMINI_LIVE_VOICE_OPTIONS =[
   { alias: 'Superman', id: 'Charon', vibe: 'deep, steady, grounded' },
   { alias: 'Wonder Woman', id: 'Kore', vibe: 'clear, composed, warm' },
   { alias: 'Batman', id: 'Fenrir', vibe: 'dark, firm, serious' },
@@ -190,7 +190,7 @@ const DEFAULT_SETTINGS: AgentSettings = {
   selectedVoice: 'Kore',
 };
 
-const GOOGLE_SERVICE_TOOLS = [
+const GOOGLE_SERVICE_TOOLS =[
   {
     name: 'render_web_artifact',
     description:
@@ -254,7 +254,7 @@ const GOOGLE_SERVICE_TOOLS = [
         query: { type: Type.STRING, description: 'Mail search query, sender, subject, or keyword.' },
         limit: { type: Type.NUMBER, description: 'Maximum number of messages to fetch.' },
       },
-      required: [],
+      required:[],
     },
   },
   {
@@ -269,7 +269,7 @@ const GOOGLE_SERVICE_TOOLS = [
         cc: { type: Type.STRING, description: 'Optional CC recipients.' },
         bcc: { type: Type.STRING, description: 'Optional BCC recipients.' },
       },
-      required: ['to', 'subject', 'body'],
+      required:['to', 'subject', 'body'],
     },
   },
   {
@@ -297,7 +297,7 @@ const GOOGLE_SERVICE_TOOLS = [
         timeMin: { type: Type.STRING, description: 'Optional start datetime.' },
         timeMax: { type: Type.STRING, description: 'Optional end datetime.' },
       },
-      required: [],
+      required:[],
     },
   },
   {
@@ -314,7 +314,7 @@ const GOOGLE_SERVICE_TOOLS = [
         description: { type: Type.STRING, description: 'Optional description.' },
         addMeet: { type: Type.BOOLEAN, description: 'Whether to add a video meeting link.' },
       },
-      required: ['title', 'startTime', 'endTime'],
+      required:['title', 'startTime', 'endTime'],
     },
   },
   {
@@ -331,7 +331,7 @@ const GOOGLE_SERVICE_TOOLS = [
         location: { type: Type.STRING, description: 'New event location.' },
         description: { type: Type.STRING, description: 'New event description.' },
       },
-      required: [],
+      required:[],
     },
   },
   {
@@ -357,7 +357,7 @@ const GOOGLE_SERVICE_TOOLS = [
         fileName: { type: Type.STRING, description: 'File name or search term if id is unknown.' },
         exportMimeType: { type: Type.STRING, description: 'Optional export MIME type, e.g. application/pdf or text/plain.' },
       },
-      required: [],
+      required:[],
     },
   },
   {
@@ -412,7 +412,7 @@ const GOOGLE_SERVICE_TOOLS = [
         range: { type: Type.STRING, description: 'Sheet range, for example Sheet1!A1:D10.' },
         query: { type: Type.STRING, description: 'File name or search query if id unknown.' },
       },
-      required: [],
+      required:[],
     },
   },
   {
@@ -425,7 +425,7 @@ const GOOGLE_SERVICE_TOOLS = [
         range: { type: Type.STRING, description: 'Target range.' },
         values: { type: Type.OBJECT, description: 'Rows/cells to write as a 2D array.' },
       },
-      required: ['spreadsheetId', 'range', 'values'],
+      required:['spreadsheetId', 'range', 'values'],
     },
   },
   {
@@ -448,7 +448,7 @@ const GOOGLE_SERVICE_TOOLS = [
       properties: {
         listId: { type: Type.STRING, description: 'Optional task list id, defaults to @default.' },
       },
-      required: [],
+      required:[],
     },
   },
   {
@@ -536,26 +536,26 @@ const GOOGLE_SERVICE_TOOLS = [
         query: { type: Type.STRING, description: 'Search query.' },
         sources: { type: Type.STRING, description: 'Comma-separated sources to search.' },
       },
-      required: ['query'],
+      required:['query'],
     },
   },
   {
     name: 'create_contract_document',
     description:
-      'Create a full contract document, save it as a document in the user drive, export it as PDF, optionally email it, and return a downloadable PDF in chat.',
+      'Create a STUNNING HTML contract document, save it as a file in the user drive, optionally email it, and return a downloadable visually rich template in chat.',
     parameters: {
       type: Type.OBJECT,
       properties: {
         title: { type: Type.STRING, description: 'Contract title.' },
-        contractType: { type: Type.STRING, description: 'Type of contract, e.g. service agreement, NDA, employment agreement.' },
+        contractType: { type: Type.STRING, description: 'Type of contract, e.g. Service Agreement, NDA, Employment Agreement.' },
         partyA: { type: Type.STRING, description: 'First party name.' },
         partyB: { type: Type.STRING, description: 'Second party name.' },
         effectiveDate: { type: Type.STRING, description: 'Effective date.' },
         jurisdiction: { type: Type.STRING, description: 'Governing law or jurisdiction.' },
         terms: { type: Type.STRING, description: 'Important terms, scope, payment, obligations, duration, termination, confidentiality, etc.' },
-        emailTo: { type: Type.STRING, description: 'Optional email address to send PDF to. Use current_user if requested.' },
+        emailTo: { type: Type.STRING, description: 'Optional email address to send the stunning HTML contract to. Use current_user if requested.' },
       },
-      required: ['title', 'contractType', 'partyA', 'partyB', 'terms'],
+      required:['title', 'contractType', 'partyA', 'partyB', 'terms'],
     },
   },
 ];
@@ -689,7 +689,7 @@ function buildEmailRaw({
     base64Content: string;
   };
 }) {
-  const headers = [
+  const headers =[
     `To: ${to}`,
     cc ? `Cc: ${cc}` : '',
     bcc ? `Bcc: ${bcc}` : '',
@@ -698,7 +698,7 @@ function buildEmailRaw({
   ].filter(Boolean);
 
   if (!attachment) {
-    const raw = [
+    const raw =[
       ...headers,
       'Content-Type: text/plain; charset="UTF-8"',
       '',
@@ -710,7 +710,7 @@ function buildEmailRaw({
 
   const boundary = `boundary_${Date.now()}`;
 
-  const raw = [
+  const raw =[
     ...headers,
     `Content-Type: multipart/mixed; boundary="${boundary}"`,
     '',
@@ -752,7 +752,7 @@ function readableDateRange(date?: string, timeMin?: string, timeMax?: string) {
   };
 }
 
-function buildContractText({
+function buildStunningHtmlContract({
   title,
   contractType,
   partyA,
@@ -763,63 +763,189 @@ function buildContractText({
 }: any) {
   const today = new Date().toLocaleDateString();
 
-  return `${title || 'Contract Agreement'}
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${title || 'Contract Agreement'}</title>
+<style>
+  :root {
+    --primary: #1a1a1a;
+    --secondary: #4a4a4a;
+    --accent: #2c5282;
+    --bg: #f8fafc;
+    --paper: #ffffff;
+    --border: #e2e8f0;
+  }
+  body {
+    font-family: 'Georgia', serif;
+    background-color: var(--bg);
+    color: var(--primary);
+    line-height: 1.6;
+    padding: 2rem;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .document {
+    background: var(--paper);
+    width: 100%;
+    max-width: 800px;
+    padding: 4rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border-top: 8px solid var(--accent);
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 2rem;
+  }
+  .title {
+    font-size: 2.2rem;
+    font-weight: normal;
+    color: var(--primary);
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .subtitle {
+    font-size: 1.2rem;
+    color: var(--secondary);
+    font-style: italic;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    background: #f1f5f9;
+    padding: 1.5rem;
+    border-radius: 4px;
+  }
+  .meta-item strong {
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--secondary);
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+  }
+  .section {
+    margin-bottom: 2.5rem;
+  }
+  .section h2 {
+    font-size: 1.4rem;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .signatures {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 5rem;
+  }
+  .signature-block {
+    border-top: 1px solid var(--primary);
+    padding-top: 1rem;
+  }
+  .signature-block strong {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  @media print {
+    body { background: white; padding: 0; }
+    .document { box-shadow: none; max-width: 100%; padding: 0; border-top: 4px solid #000; }
+  }
+</style>
+</head>
+<body>
+  <div class="document">
+    <div class="header">
+      <h1 class="title">${title || 'Contract Agreement'}</h1>
+      <div class="subtitle">${contractType || 'Legal Agreement'}</div>
+    </div>
 
-Type of Agreement:
-${contractType || 'Agreement'}
+    <div class="meta-grid">
+      <div class="meta-item">
+        <strong>Effective Date</strong>
+        <div>${effectiveDate || today}</div>
+      </div>
+      <div class="meta-item">
+        <strong>Jurisdiction</strong>
+        <div>${jurisdiction || 'Applicable Jurisdiction'}</div>
+      </div>
+      <div class="meta-item">
+        <strong>Party A</strong>
+        <div>${partyA || 'First Party'}</div>
+      </div>
+      <div class="meta-item">
+        <strong>Party B</strong>
+        <div>${partyB || 'Second Party'}</div>
+      </div>
+    </div>
 
-Effective Date:
-${effectiveDate || today}
+    <div class="section">
+      <h2>1. Purpose & Scope</h2>
+      <p>This Agreement sets out the terms and conditions under which the parties agree to work together. The specific scope of this Agreement includes the following:</p>
+      <div style="background:#f8fafc; padding:1.5rem; border-left:4px solid var(--accent); margin-top:1rem;">
+        ${(terms || 'The parties will define the scope in writing.').replace(/\n/g, '<br>')}
+      </div>
+    </div>
 
-Parties:
-1. ${partyA || 'Party A'}
-2. ${partyB || 'Party B'}
+    <div class="section">
+      <h2>2. Responsibilities & Obligations</h2>
+      <p>Each party agrees to act in good faith, perform its obligations with reasonable care, and communicate promptly regarding any material issue that may affect performance. Both parties commit to upholding the standards set forth in this document.</p>
+    </div>
 
-1. Purpose
-This Agreement sets out the terms and conditions under which the parties agree to work together.
+    <div class="section">
+      <h2>3. Payment & Consideration</h2>
+      <p>Any payment, fees, or consideration shall be handled according to the terms specifically agreed by the parties in writing or outlined in attached exhibits.</p>
+    </div>
 
-2. Scope
-The scope of this Agreement includes the following:
-${terms || 'The parties will define the scope in writing.'}
+    <div class="section">
+      <h2>4. Confidentiality & Intellectual Property</h2>
+      <p>Each party agrees to keep confidential information private and not disclose it to third parties except where required by law or agreed in writing. Unless otherwise agreed, each party retains ownership of its pre-existing intellectual property.</p>
+    </div>
 
-3. Responsibilities
-Each party agrees to act in good faith, perform its obligations with reasonable care, and communicate promptly regarding any material issue that may affect performance.
+    <div class="section">
+      <h2>5. Term & Termination</h2>
+      <p>This Agreement begins on the Effective Date and continues until completed, terminated by mutual agreement, or terminated according to written terms agreed by the parties.</p>
+    </div>
 
-4. Payment and Consideration
-Any payment, fees, or consideration shall be handled according to the terms agreed by the parties in writing.
+    <div class="section">
+      <h2>6. Governing Law</h2>
+      <p>This Agreement shall be governed by and construed in accordance with the laws of ${jurisdiction || 'the applicable jurisdiction'}. Any disputes arising under this agreement will be resolved in the appropriate courts of this jurisdiction.</p>
+    </div>
 
-5. Confidentiality
-Each party agrees to keep confidential information private and not disclose it to third parties except where required by law or agreed in writing.
-
-6. Term and Termination
-This Agreement begins on the Effective Date and continues until completed, terminated by mutual agreement, or terminated according to written terms agreed by the parties.
-
-7. Intellectual Property
-Unless otherwise agreed in writing, each party retains ownership of its pre-existing intellectual property.
-
-8. Limitation of Liability
-Neither party shall be liable for indirect, incidental, special, or consequential damages unless prohibited by applicable law.
-
-9. Governing Law
-This Agreement shall be governed by the laws of ${jurisdiction || 'the applicable jurisdiction agreed by the parties'}.
-
-10. Entire Agreement
-This Agreement represents the understanding between the parties regarding its subject matter and may be amended only in writing.
-
-11. Signatures
-
-Party A:
-Name: ${partyA || 'Party A'}
-Signature: ______________________________
-Date: ___________________
-
-Party B:
-Name: ${partyB || 'Party B'}
-Signature: ______________________________
-Date: ___________________
-
-Note:
-This draft is generated for convenience and should be reviewed by a qualified legal professional before signing.`;
+    <div class="signatures">
+      <div class="signature-block">
+        <strong>${partyA || 'Party A'}</strong>
+        <div style="color:#666; font-size:0.9rem; margin-top:0.5rem;">Signature</div>
+        <div style="margin-top:2.5rem; border-bottom:1px solid #ccc; width:85%;"></div>
+        <div style="color:#666; font-size:0.9rem; margin-top:0.5rem;">Date</div>
+      </div>
+      <div class="signature-block">
+        <strong>${partyB || 'Party B'}</strong>
+        <div style="color:#666; font-size:0.9rem; margin-top:0.5rem;">Signature</div>
+        <div style="margin-top:2.5rem; border-bottom:1px solid #ccc; width:85%;"></div>
+        <div style="color:#666; font-size:0.9rem; margin-top:0.5rem;">Date</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        window.print();
+      }
+    });
+  </script>
+</body>
+</html>`;
 }
 
 function OneLineStreamingTranscript({
@@ -916,7 +1042,7 @@ function LimeVoiceOrb({
 
     const makeOrbPath = (cx: number, cy: number, radius: number, pulse: number, time: number) => {
       const path = new Path2D();
-      const points: Array<{ x: number; y: number }> = [];
+      const points: Array<{ x: number; y: number }> =[];
       const bands = bandsRef.current.length ? bandsRef.current : Array(20).fill(0);
       const live = activeRef.current && speakingRef.current;
       const count = 112;
@@ -1052,7 +1178,7 @@ function LimeVoiceOrb({
 
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  },[]);
 
   return (
     <div className="relative flex h-72 w-72 items-center justify-center">
@@ -1078,7 +1204,7 @@ function StartIconMicVisualizer({
 }) {
   const innerBands = micBands?.length
     ? micBands.slice(5, 14)
-    : [0.35, 0.5, 0.72, 0.9, 1, 0.82, 0.64, 0.46, 0.32].map(n => n * micLevel);
+    :[0.35, 0.5, 0.72, 0.9, 1, 0.82, 0.64, 0.46, 0.32].map(n => n * micLevel);
 
   return (
     <button
@@ -1144,11 +1270,11 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState<AgentSettings>(DEFAULT_SETTINGS);
-  const [authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
-  const [authName, setAuthName] = useState('');
+  const[authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
+  const[authName, setAuthName] = useState('');
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
-  const [authConfirmPassword, setAuthConfirmPassword] = useState('');
+  const[authConfirmPassword, setAuthConfirmPassword] = useState('');
   const [authBusy, setAuthBusy] = useState(false);
   const [authMessage, setAuthMessage] = useState<{ type: 'error' | 'success' | 'info'; text: string } | null>(null);
   const [showAuthPassword, setShowAuthPassword] = useState(false);
@@ -1164,7 +1290,7 @@ export default function App() {
       link.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap';
       document.head.appendChild(link);
     }
-  }, []);
+  },[]);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
@@ -1221,7 +1347,7 @@ export default function App() {
     });
 
     return () => unsub();
-  }, []);
+  },[]);
 
   const getAuthErrorMessage = (error: any) => {
     const code = String(error?.code || '');
@@ -1541,12 +1667,12 @@ function BeatriceAgent({
   initialSettings: AgentSettings;
 }) {
   const [isActive, setIsActive] = useState(false);
-  const [connecting, setConnecting] = useState(false);
+  const[connecting, setConnecting] = useState(false);
   const [isAgentSpeaking, setIsAgentSpeaking] = useState(false);
   const [micLevel, setMicLevel] = useState(0);
-  const [micBands, setMicBands] = useState<number[]>(Array(20).fill(0));
-  const [speakerLevel, setSpeakerLevel] = useState(0);
-  const [speakerBands, setSpeakerBands] = useState<number[]>(Array(20).fill(0));
+  const[micBands, setMicBands] = useState<number[]>(Array(20).fill(0));
+  const[speakerLevel, setSpeakerLevel] = useState(0);
+  const[speakerBands, setSpeakerBands] = useState<number[]>(Array(20).fill(0));
   const [tasks, setTasks] = useState<ActionTask[]>([]);
   const [historyContext, setHistoryContext] = useState<string>('');
   const [historyMsgs, setHistoryMsgs] = useState<ChatMessage[]>([]);
@@ -1557,7 +1683,7 @@ function BeatriceAgent({
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const [chatInput, setChatInput] = useState('');
+  const[chatInput, setChatInput] = useState('');
   const [settings, setSettings] = useState<AgentSettings>({
     ...DEFAULT_SETTINGS,
     ...initialSettings,
@@ -1619,7 +1745,7 @@ function BeatriceAgent({
 
     const unsub = onValue(historyRef, (snap) => {
       const msgs: string[] = [];
-      const rawMsgs: ChatMessage[] = [];
+      const rawMsgs: ChatMessage[] =[];
 
       snap.forEach(child => {
         const m = child.val() as ChatMessage;
@@ -1645,7 +1771,7 @@ function BeatriceAgent({
       unsub();
       stopSession();
     };
-  }, [user.uid]);
+  },[user.uid]);
 
   const selectedVoiceMeta = useMemo(
     () => GEMINI_LIVE_VOICE_OPTIONS.find(v => v.id === settings.selectedVoice) || GEMINI_LIVE_VOICE_OPTIONS[0],
@@ -1712,7 +1838,7 @@ function BeatriceAgent({
 
       try {
         if (recorder && typeof recorder.getFrequencyBands === 'function') {
-          const bands = recorder.getFrequencyBands(20) || [];
+          const bands = recorder.getFrequencyBands(20) ||[];
           nextBands = bands.map((n: number) => Math.min(1, Math.max(0, Number(n || 0))));
           const frequencyAverage = nextBands.reduce((sum: number, n: number) => sum + n, 0) / Math.max(nextBands.length, 1);
           const recorderLevel = typeof recorder.getLevel === 'function' ? recorder.getLevel() : 0;
@@ -1728,7 +1854,7 @@ function BeatriceAgent({
 
       try {
         if (streamer && typeof streamer.getFrequencyBands === 'function') {
-          const bands = streamer.getFrequencyBands(20) || [];
+          const bands = streamer.getFrequencyBands(20) ||[];
           nextSpeakerBands = bands.map((n: number) => Math.min(1, Math.max(0, Number(n || 0))));
           const frequencyAverage = nextSpeakerBands.reduce((sum: number, n: number) => sum + n, 0) / Math.max(nextSpeakerBands.length, 1);
           const streamerLevel = typeof streamer.getLevel === 'function' ? streamer.getLevel() : 0;
@@ -1878,7 +2004,7 @@ function BeatriceAgent({
       await googleJson(`https://docs.googleapis.com/v1/documents/${doc.documentId}:batchUpdate`, {
         method: 'POST',
         body: JSON.stringify({
-          requests: [
+          requests:[
             {
               insertText: {
                 location: { index: 1 },
@@ -2027,12 +2153,12 @@ function BeatriceAgent({
         );
 
         const messages = await Promise.all(
-          (list.messages || []).map(async (m: any) => {
+          (list.messages ||[]).map(async (m: any) => {
             const msg = await googleJson(
               `https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date`
             );
 
-            const headers = msg.payload?.headers || [];
+            const headers = msg.payload?.headers ||[];
             const findHeader = (name: string) => headers.find((h: any) => h.name?.toLowerCase() === name.toLowerCase())?.value || '';
 
             return {
@@ -2084,7 +2210,7 @@ function BeatriceAgent({
           `https://www.googleapis.com/calendar/v3/calendars/primary/events?singleEvents=true&orderBy=startTime&maxResults=20&timeMin=${encodeURIComponent(range.timeMin)}&timeMax=${encodeURIComponent(range.timeMax)}`
         );
 
-        return { toolName, executedAt, status: 'completed', range, events: events.items || [] };
+        return { toolName, executedAt, status: 'completed', range, events: events.items ||[] };
       }
 
       case 'calendar_create_event': {
@@ -2175,7 +2301,7 @@ function BeatriceAgent({
           `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(`name contains '${escaped}' and trashed = false${mimeClause}`)}&fields=files(id,name,mimeType,webViewLink,webContentLink,modifiedTime,size)&pageSize=${limit}`
         );
 
-        return { toolName, executedAt, status: 'completed', files: result.files || [] };
+        return { toolName, executedAt, status: 'completed', files: result.files ||[] };
       }
 
       case 'drive_read_file': {
@@ -2303,7 +2429,7 @@ function BeatriceAgent({
           await googleJson(`https://docs.googleapis.com/v1/documents/${documentId}:batchUpdate`, {
             method: 'POST',
             body: JSON.stringify({
-              requests: [
+              requests:[
                 {
                   deleteContentRange: {
                     range: { startIndex: 1, endIndex: Math.max(1, endIndex - 1) },
@@ -2322,7 +2448,7 @@ function BeatriceAgent({
           await googleJson(`https://docs.googleapis.com/v1/documents/${documentId}:batchUpdate`, {
             method: 'POST',
             body: JSON.stringify({
-              requests: [
+              requests:[
                 {
                   insertText: {
                     endOfSegmentLocation: {},
@@ -2356,7 +2482,7 @@ function BeatriceAgent({
           `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`
         );
 
-        return { toolName, executedAt, status: 'completed', spreadsheetId, range, values: result.values || [] };
+        return { toolName, executedAt, status: 'completed', spreadsheetId, range, values: result.values ||[] };
       }
 
       case 'sheets_update': {
@@ -2365,7 +2491,7 @@ function BeatriceAgent({
           {
             method: 'PUT',
             body: JSON.stringify({
-              values: Array.isArray(args.values) ? args.values : args.values?.values || [],
+              values: Array.isArray(args.values) ? args.values : args.values?.values ||[],
             }),
           }
         );
@@ -2385,7 +2511,7 @@ function BeatriceAgent({
       case 'tasks_list': {
         const listId = args.listId || '@default';
         const result = await googleJson(`https://tasks.googleapis.com/tasks/v1/lists/${encodeURIComponent(listId)}/tasks`);
-        return { toolName, executedAt, status: 'completed', tasks: result.items || [] };
+        return { toolName, executedAt, status: 'completed', tasks: result.items ||[] };
       }
 
       case 'tasks_create': {
@@ -2406,7 +2532,7 @@ function BeatriceAgent({
           `https://people.googleapis.com/v1/people:searchContacts?query=${encodeURIComponent(args.query)}&readMask=names,emailAddresses,phoneNumbers,organizations`
         );
 
-        return { toolName, executedAt, status: 'completed', contacts: result.results || [] };
+        return { toolName, executedAt, status: 'completed', contacts: result.results ||[] };
       }
 
       case 'meet_schedule': {
@@ -2446,7 +2572,7 @@ function BeatriceAgent({
           `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=${limit}&q=${encodeURIComponent(args.query)}`
         );
 
-        return { toolName, executedAt, status: 'completed', videos: result.items || [] };
+        return { toolName, executedAt, status: 'completed', videos: result.items ||[] };
       }
 
       case 'forms_create': {
@@ -2478,7 +2604,7 @@ function BeatriceAgent({
           {
             method: 'POST',
             body: JSON.stringify({
-              dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+              dateRanges:[{ startDate: '30daysAgo', endDate: 'today' }],
               metrics,
               dimensions,
             }),
@@ -2523,25 +2649,30 @@ function BeatriceAgent({
       }
 
       case 'create_contract_document': {
-        const contractText = buildContractText(args);
+        const contractHtml = buildStunningHtmlContract(args);
         const title = args.title || `${args.contractType || 'Contract'} - ${args.partyA || 'Party A'} and ${args.partyB || 'Party B'}`;
-        const doc = await createGoogleDoc(title, contractText);
-        const pdfBlob = await exportDriveFile(doc.documentId, 'application/pdf');
-        const pdfDownloadData = await makeBlobDownloadData(pdfBlob);
-        const pdfBuffer = await pdfBlob.arrayBuffer();
-
-        let emailResult = null;
+        
+        const htmlFile = makeHtmlArtifactFile(contractHtml, `${title}.html`);
+        
+        let driveFile: any = null;
+        let emailResult: any = null;
         const emailTo = args.emailTo === 'current_user' ? getCurrentUserEmail() : args.emailTo;
+
+        driveFile = await uploadTextFileToDrive(
+          htmlFile.htmlPreviewFilename,
+          htmlFile.html,
+          'text/html'
+        );
 
         if (emailTo) {
           emailResult = await sendGmail({
             to: emailTo,
             subject: title,
-            body: 'Attached is the contract PDF.',
+            body: 'Attached is the contract document. Please open the attached HTML file in your browser to view or print as PDF.',
             attachment: {
-              filename: `${title}.pdf`,
-              mimeType: 'application/pdf',
-              base64Content: arrayBufferToBase64(pdfBuffer),
+              filename: htmlFile.htmlPreviewFilename,
+              mimeType: 'text/html',
+              base64Content: btoa(unescape(encodeURIComponent(htmlFile.html))),
             },
           });
         }
@@ -2551,13 +2682,11 @@ function BeatriceAgent({
           executedAt,
           status: 'completed',
           title,
-          documentId: doc.documentId,
-          driveLink: doc.driveFile?.webViewLink,
+          driveLink: driveFile?.webViewLink,
           emailSentTo: emailTo || null,
           emailResult,
-          textPreview: contractText.slice(0, 12000),
-          downloadData: pdfDownloadData,
-          downloadFilename: `${title}.pdf`,
+          summary: 'Created a stunning HTML contract template.',
+          ...htmlFile,
         };
       }
 
@@ -2582,10 +2711,14 @@ function BeatriceAgent({
       }
 
       const hasGoogleServiceAccess = Boolean(localStorage.getItem('googleAccessToken'));
-      const systemInstruction = [
-        BASE_LIVE_AGENT_PROMPT,
+      const systemInstruction =[
+        `=== BIBLE (NON-NEGOTIABLE CORE RULES FROM /lib/personality.ts) ===`,
         BIBLE_PERSONALITY || '',
+        `You MUST follow the above BIBLE rules absolutely every time. Never deviate.`,
+        `=== END BIBLE ===`,
+        BASE_LIVE_AGENT_PROMPT,
         historyContext,
+        `CRITICAL DIRECTIVE: When you decide to execute a tool (like drafting a contract, generating HTML, searching Drive, etc.), YOU MUST FIRST speak out loud to acknowledge the task (e.g., "I'm drafting the contract right now," "I'm checking the schedule," "Let me create that for you") BEFORE triggering the tool call. DO NOT execute the tool in complete silence. Keep the conversation flowing.`,
         `Product brand: VEP, which means Virtual Employee Persona. Default persona: Beatrice, Boss Jo Lernout's secretary.`,
         `User preferred name: ${settings.userName}.`,
         `Agent visible name: ${settings.agentName}.`,
@@ -2613,7 +2746,7 @@ function BeatriceAgent({
           systemInstruction,
           inputAudioTranscription: {},
           outputAudioTranscription: {},
-          tools: [{
+          tools:[{
             functionDeclarations: GOOGLE_SERVICE_TOOLS,
           }],
         },
@@ -2627,7 +2760,7 @@ function BeatriceAgent({
               const calls = msg.toolCall.functionCalls;
 
               if (calls) {
-                const resps = [];
+                const resps =[];
 
                 for (const c of calls) {
                   const toolName = c.name || 'unknown_tool';
@@ -2635,7 +2768,7 @@ function BeatriceAgent({
                   const tid = Math.random().toString(36).substring(7);
                   const action = safeJsonStringify(args || {});
 
-                  setTasks(p => [...p, {
+                  setTasks(p =>[...p, {
                     id: tid,
                     serviceName: toolName,
                     action,
@@ -2851,6 +2984,7 @@ function BeatriceAgent({
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode, width: 1280, height: 720 },
+          audio: false, // Ensures no loopback or duplicate voices are captured from the environment
         });
 
         if (videoRef.current) {
@@ -2885,7 +3019,7 @@ function BeatriceAgent({
               sendVideoToLive(base64Data);
             }
           }
-        }, 900);
+        }, 2000); // 2 seconds between frames to avoid double-processing audio loops
       } catch (e) {
         console.error('Camera error:', e);
       }
@@ -2941,6 +3075,7 @@ function BeatriceAgent({
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: newMode, width: 1280, height: 720 },
+          audio: false,
         });
 
         if (videoRef.current) {
