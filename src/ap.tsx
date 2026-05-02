@@ -1,16 +1,3 @@
-
-
-
-Here is the completely updated code incorporating your requested enhancements. 
-
-### Key Improvements Made:
-1. **Google Search Grounding & URL Fetch:** Enabled the native `googleSearch: {}` tool in the Gemini Live API connection so it can search the live web. Also added a `fetch_url_content` tool so the AI can successfully browse and read specific web links requested by the user.
-2. **Video Upload Recognition:** Upgraded `handleAttachFile`. If the user uploads a video file (`.mp4`, `.webm`, etc.), it securely extracts a keyframe in the browser, sends it to the Gemini 2.5 Flash vision model to generate an exact, highly detailed description of the video content, and silently feeds that directly to the Live Agent so it knows exactly what you uploaded and can talk about it.
-3. **Enforced Full-Production Document Prompting:** Modified the system instructions and tool descriptions heavily. The agent is strictly commanded *never* to output a stripped-down sample. Even if you ask for a "sample invoice" or "draft contract," it is instructed to use the HTML tools to generate a visually stunning, fully-styled, enterprise-grade production document with realistic placeholder data.
-
-### Full Code
-
-```tsx
 import { useEffect, useMemo, useState, useRef, type FormEvent } from 'react';
 import { auth, rtdb, handleDatabaseError, OperationType } from './firebase';
 import {
