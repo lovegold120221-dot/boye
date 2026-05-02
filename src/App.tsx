@@ -53,6 +53,8 @@ import {
   Send,
   ExternalLink,
   Code2,
+  Database,
+  Trash2
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 
@@ -89,6 +91,7 @@ interface AgentSettings {
   personality: string;
   avatarUrl: string;
   selectedVoice: string;
+  knowledgeBase: string;
 }
 
 const LIVE_MODEL = 'gemini-3.1-flash-live-preview';
@@ -189,9 +192,56 @@ const DEFAULT_SETTINGS: AgentSettings = {
   personality: DEFAULT_AGENT_PERSONALITY,
   avatarUrl: '',
   selectedVoice: 'Kore',
+  knowledgeBase: '',
 };
 
 const GOOGLE_SERVICE_TOOLS =[
+  {
+    name: 'read_knowledge_base',
+    description: 'Read the contents of the user\'s uploaded custom Knowledge Base documents. Use this when the user asks about their custom data, projects, study notes, or business context.',
+    parameters: {
+      type: Type.OBJECT,
+      properties: {
+        query: { type: Type.STRING, description: 'What you are looking for in the knowledge base.' }
+      },
+      required: ['query']
+    }
+  },
+  {
+    name: 'maps_search_places',
+    description: 'Search for places, businesses, or addresses using Google Maps Places API.',
+    parameters: {
+      type: Type.OBJECT,
+      properties: {
+        query: { type: Type.STRING, description: 'Search query e.g. "coffee shops in Baguio" or "hardware store nearby"' }
+      },
+      required: ['query']
+    }
+  },
+  {
+    name: 'maps_get_directions',
+    description: 'Get route directions, distance, and ETA between two locations.',
+    parameters: {
+      type: Type.OBJECT,
+      properties: {
+        origin: { type: Type.STRING, description: 'Starting location.' },
+        destination: { type: Type.STRING, description: 'Target destination.' }
+      },
+      required: ['origin', 'destination']
+    }
+  },
+  {
+    name: 'get_air_quality',
+    description: 'Get current air quality index (AQI) for a specific latitude and longitude.',
+    parameters: {
+      type: Type.OBJECT,
+      properties: {
+        location_latitude: { type: Type.NUMBER },
+        location_longitude: { type: Type.NUMBER }
+      },
+      required: ['location_latitude', 'location_longitude']
+    }
+  },
   {
     name: 'create_meeting_minutes',
     description: 'Generate stunning HTML meeting minutes. Use this especially after analyzing a meeting transcript.',
@@ -253,16 +303,14 @@ const GOOGLE_SERVICE_TOOLS =[
   },
   {
     name: 'render_web_artifact',
-    description:
-      'Create and render any complete one-file HTML/CSS/JS artifact: animated slides, Three.js showcases, forms, landing pages, calculators, documents, prototypes, demos. The frontend saves it to chat as downloadable HTML.',
+    description: 'Create and render any complete one-file HTML/CSS/JS artifact: animated slides, Three.js showcases, forms, landing pages, calculators, documents, prototypes, demos. The frontend saves it to chat as downloadable HTML.',
     parameters: {
       type: Type.OBJECT,
       properties: {
         title: { type: Type.STRING, description: 'Artifact title.' },
         artifactType: {
           type: Type.STRING,
-          description:
-            'Type of artifact: slides, form, landing_page, threejs_showcase, calculator, demo, prototype, other.',
+          description: 'Type of artifact: slides, form, landing_page, threejs_showcase, calculator, demo, prototype, other.',
         },
         suggestedFilename: {
           type: Type.STRING,
@@ -274,19 +322,17 @@ const GOOGLE_SERVICE_TOOLS =[
         },
         html: {
           type: Type.STRING,
-          description:
-            'Complete standalone HTML file. Must include DOCTYPE, html, head, style, body, and script if needed. Must be directly openable in browser.',
+          description: 'Complete standalone HTML file. Must include DOCTYPE, html, head, style, body, and script if needed. Must be directly openable in browser.',
         },
         saveToDrive: { type: Type.BOOLEAN, description: 'If true, upload the HTML artifact to the user drive.' },
         emailTo: { type: Type.STRING, description: 'Optional email address to send the HTML artifact to. Use current_user if requested.' },
       },
-      required: ['title', 'html'],
+      required:['title', 'html'],
     },
   },
   {
     name: 'gmail_read',
-    description:
-      'Read or search the user mail inbox. Use when the user asks about mail, inbox, unread messages, senders, email content, or recent mail.',
+    description: 'Read or search the user mail inbox. Use when the user asks about mail, inbox, unread messages, senders, email content, or recent mail.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -308,7 +354,7 @@ const GOOGLE_SERVICE_TOOLS =[
         cc: { type: Type.STRING, description: 'Optional CC recipients.' },
         bcc: { type: Type.STRING, description: 'Optional BCC recipients.' },
       },
-      required: ['to', 'subject', 'body'],
+      required:['to', 'subject', 'body'],
     },
   },
   {
@@ -323,7 +369,7 @@ const GOOGLE_SERVICE_TOOLS =[
         cc: { type: Type.STRING, description: 'Optional CC recipients.' },
         bcc: { type: Type.STRING, description: 'Optional BCC recipients.' },
       },
-      required:['to', 'subject', 'body'],
+      required: ['to', 'subject', 'body'],
     },
   },
   {
@@ -353,7 +399,7 @@ const GOOGLE_SERVICE_TOOLS =[
         description: { type: Type.STRING, description: 'Optional description.' },
         addMeet: { type: Type.BOOLEAN, description: 'Whether to add a video meeting link.' },
       },
-      required: ['title', 'startTime', 'endTime'],
+      required:['title', 'startTime', 'endTime'],
     },
   },
   {
@@ -465,7 +511,7 @@ const GOOGLE_SERVICE_TOOLS =[
         terms: { type: Type.STRING, description: 'Important terms, scope, payment, obligations, duration, termination, confidentiality, etc.' },
         emailTo: { type: Type.STRING, description: 'Optional email address to send the stunning HTML contract to. Use current_user if requested.' },
       },
-      required:['title', 'contractType', 'partyA', 'partyB', 'terms'],
+      required: ['title', 'contractType', 'partyA', 'partyB', 'terms'],
     },
   },
 ];
@@ -821,7 +867,7 @@ function buildDashboardHtml(args: any) {
       type: '${args.chartType || 'bar'}',
       data: {
         labels: ${JSON.stringify(labels && labels.length ? labels : ['A','B','C'])},
-        datasets: ${JSON.stringify(datasets && datasets.length ? datasets : [{label: 'Data', data: [1,2,3]}])}
+        datasets: ${JSON.stringify(datasets && datasets.length ? datasets : [{label: 'Data', data:[1,2,3]}])}
       },
       options: { responsive: true, plugins: { legend: { position: 'top' } } }
     });
@@ -1263,9 +1309,9 @@ function MeetingRecorderModal({
   onProcess: (transcript: string) => Promise<void>;
 }) {
   const [isRecording, setIsRecording] = useState(false);
-  const[isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [duration, setDuration] = useState(0);
-  const [transcript, setTranscript] = useState('');
+  const[transcript, setTranscript] = useState('');
   
   const recognitionRef = useRef<any>(null);
   const isRecordingRef = useRef(false);
@@ -1447,14 +1493,14 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState<AgentSettings>(DEFAULT_SETTINGS);
-  const[authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
-  const[authName, setAuthName] = useState('');
+  const [authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
+  const [authName, setAuthName] = useState('');
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
-  const[authConfirmPassword, setAuthConfirmPassword] = useState('');
-  const [authBusy, setAuthBusy] = useState(false);
+  const [authConfirmPassword, setAuthConfirmPassword] = useState('');
+  const[authBusy, setAuthBusy] = useState(false);
   const [authMessage, setAuthMessage] = useState<{ type: 'error' | 'success' | 'info'; text: string } | null>(null);
-  const [showAuthPassword, setShowAuthPassword] = useState(false);
+  const[showAuthPassword, setShowAuthPassword] = useState(false);
   const [showAuthConfirmPassword, setShowAuthConfirmPassword] = useState(false);
 
   useEffect(() => {
@@ -1824,23 +1870,23 @@ function BeatriceAgent({
   const [isActive, setIsActive] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [isAgentSpeaking, setIsAgentSpeaking] = useState(false);
-  const[micLevel, setMicLevel] = useState(0);
-  const [micBands, setMicBands] = useState<number[]>(Array(20).fill(0));
-  const [speakerLevel, setSpeakerLevel] = useState(0);
+  const [micLevel, setMicLevel] = useState(0);
+  const[micBands, setMicBands] = useState<number[]>(Array(20).fill(0));
+  const[speakerLevel, setSpeakerLevel] = useState(0);
   const [speakerBands, setSpeakerBands] = useState<number[]>(Array(20).fill(0));
   const [tasks, setTasks] = useState<ActionTask[]>([]);
-  const[historyContext, setHistoryContext] = useState<string>('');
-  const [historyMsgs, setHistoryMsgs] = useState<ChatMessage[]>([]);
+  const [historyContext, setHistoryContext] = useState<string>('');
+  const[historyMsgs, setHistoryMsgs] = useState<ChatMessage[]>([]);
   const [currentTranscript, setCurrentTranscript] = useState<{ role: 'user' | 'model'; text: string } | null>(null);
 
-  const [isMuted, setIsMuted] = useState(false);
+  const[isMuted, setIsMuted] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const[showMeetingRecorder, setShowMeetingRecorder] = useState(false);
+  const [showMeetingRecorder, setShowMeetingRecorder] = useState(false);
   const [chatInput, setChatInput] = useState('');
-  const[settings, setSettings] = useState<AgentSettings>({ ...DEFAULT_SETTINGS, ...initialSettings });
+  const [settings, setSettings] = useState<AgentSettings>({ ...DEFAULT_SETTINGS, ...initialSettings });
 
   const aiRef = useRef<GoogleGenAI | null>(null);
   const sessionRef = useRef<any>(null);
@@ -1857,6 +1903,7 @@ function BeatriceAgent({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoIntervalRef = useRef<any>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const knowledgeBaseInputRef = useRef<HTMLInputElement | null>(null);
 
   const modelTranscriptBufferRef = useRef('');
   const userTranscriptBufferRef = useRef('');
@@ -1929,11 +1976,11 @@ function BeatriceAgent({
 
   const selectedVoiceMeta = useMemo(() => {
     return GEMINI_LIVE_VOICE_OPTIONS.find(v => v.id === settings.selectedVoice) || GEMINI_LIVE_VOICE_OPTIONS[0];
-  }, [settings.selectedVoice]);
+  },[settings.selectedVoice]);
 
   const saveMessage = (role: 'user' | 'model', text: string, extra?: Partial<ChatMessage>) => {
     const clean = text.trim(); 
-    if (!clean) return;
+    if (!clean && !extra?.fileDataUrl) return;
     
     try { 
       const msgRef = push(ref(rtdb, 'users/' + user.uid + '/messages')); 
@@ -2168,7 +2215,7 @@ function BeatriceAgent({
 
   const uploadTextFileToDrive = async (fileName: string, content: string, mimeType = 'text/plain', folderId?: string) => {
     const metadata: any = { name: fileName }; 
-    if (folderId) metadata.parents = [folderId];
+    if (folderId) metadata.parents =[folderId];
     
     const boundary = `boundary_${Date.now()}`;
     const multipartBody = 
@@ -2240,6 +2287,71 @@ function BeatriceAgent({
 
     try {
       switch (toolName) {
+        case 'read_knowledge_base': {
+          return { 
+            toolName, 
+            executedAt, 
+            status: 'completed', 
+            content: settings.knowledgeBase || "The knowledge base is currently empty. Tell the user to upload text files in their Office Profile settings." 
+          };
+        }
+
+        case 'maps_search_places': {
+          const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+          if (!apiKey) throw new Error("VITE_GOOGLE_API_KEY is missing. Add it to your environment variables to use Google Maps Platform.");
+          
+          const res = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(args.query)}&key=${apiKey}`);
+          const data = await res.json();
+          
+          return { 
+            toolName, 
+            executedAt, 
+            status: 'completed', 
+            results: data.results?.slice(0, 5) ||[] 
+          };
+        }
+
+        case 'maps_get_directions': {
+          const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+          if (!apiKey) throw new Error("VITE_GOOGLE_API_KEY is missing. Add it to your environment variables to use Google Maps Platform.");
+          
+          const res = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(args.origin)}&destination=${encodeURIComponent(args.destination)}&key=${apiKey}`);
+          const data = await res.json();
+          
+          if (!data.routes || data.routes.length === 0) throw new Error("No routes found between these locations.");
+          
+          return { 
+            toolName, 
+            executedAt, 
+            status: 'completed', 
+            routes: data.routes.map((r: any) => ({ 
+              summary: r.summary, 
+              distance: r.legs[0].distance.text, 
+              duration: r.legs[0].duration.text, 
+              stepsCount: r.legs[0].steps.length 
+            })) 
+          };
+        }
+
+        case 'get_air_quality': {
+          const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+          if (!apiKey) throw new Error("VITE_GOOGLE_API_KEY is missing. Add it to your environment variables to use Google Maps Platform.");
+          
+          const res = await fetch(`https://airquality.googleapis.com/v1/currentConditions:lookup?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              location: {
+                latitude: args.location_latitude,
+                longitude: args.location_longitude
+              }
+            })
+          });
+          
+          const data = await res.json();
+          return { toolName, executedAt, status: 'completed', airQuality: data };
+        }
+
         case 'create_invoice_document': 
           return await handleDocumentGeneration(buildInvoiceHtml(args), 'Invoice');
           
@@ -2529,7 +2641,7 @@ function BeatriceAgent({
       let errorMessage = String(err?.message || err);
       
       if (errorMessage.includes('403') || errorMessage.includes('insufficient')) {
-        errorMessage += " (Permission denied. Please reconnect your Google account in the Profile and check ALL permission boxes, particularly for Gmail sending.)";
+        errorMessage += " (Permission denied. Please reconnect your Google account in the Profile and check ALL permission boxes, particularly for Gmail sending or API keys.)";
       }
       
       throw new Error(errorMessage);
@@ -2560,7 +2672,8 @@ function BeatriceAgent({
         `=== END BIBLE ===`,
         BASE_LIVE_AGENT_PROMPT,
         historyContext,
-        `CRITICAL DIRECTIVE FOR TOOL EXECUTION: When you trigger a tool (like drafting a contract, generating HTML, searching Drive, sending an email, etc.), YOU MUST NOT GO SILENT. You MUST continuously "talk to yourself" out loud in a highly natural, slightly entertaining human monologue while working. Use filler words, express thoughts, and narrate your process internally. Example: "Mmm, so I'm generating this now... okay, so I'm on this page. Alright, now I will do like this... Oh my gosh, wait, okay... let me try again. Shocks. Oh, yeah. My gosh, this is so embarrassing if I mess up... okay, almost done..." Make it sound exactly like a normal office worker muttering to themselves while focused on a task. KEEP TALKING while the tool processes!`,
+        `Current physical location context: Baguio, Philippines. Use this if the user asks for weather, places, directions, etc., without specifying a city.`,
+        `CRITICAL DIRECTIVE FOR TOOL EXECUTION: When you trigger a tool (like drafting a contract, generating HTML, searching Drive, searching Maps, sending an email, etc.), YOU MUST NOT GO SILENT. You MUST continuously "talk to yourself" out loud in a highly natural, slightly entertaining human monologue while working. Use filler words, express thoughts, and narrate your process internally. Example: "Mmm, so I'm generating this now... okay, let me search Maps... alright... Oh my gosh, wait, okay... let me try again. Shocks. Oh, yeah... almost done..." Make it sound exactly like a normal office worker muttering to themselves while focused on a task. KEEP TALKING while the tool processes!`,
         `Product brand: VEP, which means Virtual Employee Persona. Default persona: Beatrice, Boss Jo Lernout's secretary.`,
         `User preferred name: ${settings.userName}.`,
         `Agent visible name: ${settings.agentName}.`,
@@ -2905,7 +3018,7 @@ function BeatriceAgent({
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
-        img.onload = () => {
+        img.onload = async () => {
           const canvas = document.createElement('canvas');
           const MAX_WIDTH = 500;
           const scaleSize = Math.min(1, MAX_WIDTH / img.width);
@@ -2925,9 +3038,21 @@ function BeatriceAgent({
           
           updateLiveTranscript('user', `Attached Image: ${safeName}`, 3000);
           
-          if (sessionRef.current) {
-            sendVideoToLive(base64Data);
-            sendTextToLive(`${settings.userName} just showed you an image named "${safeName}". Look at it and describe what you see or react to it.`);
+          if (sessionRef.current && aiRef.current) {
+            try {
+              const result = await aiRef.current.models.generateContent({
+                model: 'gemini-2.5-flash',
+                contents:[
+                  "Describe this image precisely, accurately, and in high detail. Do not make anything up. Just state exactly what is visible.",
+                  { inlineData: { mimeType: 'image/jpeg', data: base64Data } }
+                ]
+              });
+              
+              const accurateDescription = result.text;
+              sendTextToLive(`[SYSTEM NOTIFICATION]: The user just uploaded an image named ${safeName}. Here is the verified, exact visual description of the image: "${accurateDescription}". Please respond to the user about this image naturally as if you just looked at it.`);
+            } catch (err) {
+              sendTextToLive(`[SYSTEM NOTIFICATION]: The user uploaded an image named ${safeName}, but the visual processing failed. Tell the user you can't see it clearly and ask them to describe it.`);
+            }
           }
         };
         img.src = e.target?.result as string;
@@ -2961,6 +3086,22 @@ function BeatriceAgent({
         sendTextToLive(`${settings.userName} attached a file named "${safeName}" with type "${fileType}". Acknowledge it normally. Say you might need a specific tool to read this format if it's not text or an image.`);
       }
     }
+  };
+
+  const handleKnowledgeBaseUpload = (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result as string;
+        setSettings(s => ({
+          ...s,
+          knowledgeBase: s.knowledgeBase ? `${s.knowledgeBase}\n\n=== DOCUMENT: ${file.name} ===\n${text}` : `=== DOCUMENT: ${file.name} ===\n${text}`
+        }));
+      };
+      reader.readAsText(file);
+    });
   };
 
   const stopSession = () => {
@@ -3023,7 +3164,7 @@ Tasks:
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
-                tools:[{ functionDeclarations: GOOGLE_SERVICE_TOOLS }],
+                tools: [{ functionDeclarations: GOOGLE_SERVICE_TOOLS }],
                 systemInstruction: "You are Beatrice, an executive assistant. Execute tools precisely as requested to support your boss."
             }
         });
@@ -3069,6 +3210,18 @@ Tasks:
         onChange={(e) => { 
           const file = e.target.files?.[0]; 
           if (file) handleAttachFile(file); 
+          e.target.value = ''; 
+        }} 
+      />
+
+      <input 
+        ref={knowledgeBaseInputRef} 
+        type="file" 
+        className="hidden" 
+        multiple
+        accept=".txt,.md,.csv,.json"
+        onChange={(e) => { 
+          handleKnowledgeBaseUpload(e.target.files); 
           e.target.value = ''; 
         }} 
       />
@@ -3618,13 +3771,48 @@ Tasks:
                   <textarea 
                     value={settings.personality} 
                     onChange={(e) => setSettings(s => ({ ...s, personality: e.target.value }))} 
-                    className="min-h-[340px] w-full resize-y rounded-xl border border-white/10 bg-[#0A0A0B] p-4 font-mono text-xs leading-relaxed text-zinc-300 outline-none transition-all focus:border-lime-300/50 focus:ring-1 focus:ring-lime-300/50" 
+                    className="min-h-[140px] w-full resize-y rounded-xl border border-white/10 bg-[#0A0A0B] p-4 font-mono text-xs leading-relaxed text-zinc-300 outline-none transition-all focus:border-lime-300/50 focus:ring-1 focus:ring-lime-300/50" 
                     placeholder="Describe how the agent should behave..." 
                   />
                   <p className="text-[10px] leading-relaxed text-zinc-600">
                     The hidden office-behavior prompt stays applied behind this editable persona.
                   </p>
                 </div>
+
+                <div className="flex flex-col space-y-3 pt-6 border-t border-white/10">
+                  <div className="flex items-center gap-2">
+                    <Database className="h-4 w-4 text-lime-300" />
+                    <label className="text-sm font-bold uppercase tracking-widest text-white">Custom Knowledge Base</label>
+                  </div>
+                  <p className="text-[10px] leading-relaxed text-zinc-500">
+                    Upload text files, notes, or CSVs. The agent will read these when you ask about your personal data.
+                  </p>
+                  
+                  <div className="flex items-center gap-3">
+                    <button 
+                      onClick={() => knowledgeBaseInputRef.current?.click()} 
+                      className="flex items-center justify-center gap-2 rounded-xl bg-lime-300/10 border border-lime-300/20 px-4 py-3 text-xs font-bold uppercase tracking-widest text-lime-300 transition-all hover:bg-lime-300/20"
+                    >
+                      <Upload className="h-4 w-4" /> Add Text Files (.txt, .csv)
+                    </button>
+                    
+                    {settings.knowledgeBase && (
+                      <button 
+                        onClick={() => setSettings(s => ({ ...s, knowledgeBase: '' }))} 
+                        className="flex items-center justify-center gap-2 rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-xs font-bold uppercase tracking-widest text-red-400 transition-all hover:bg-red-500/20"
+                      >
+                        <Trash2 className="h-4 w-4" /> Clear Data
+                      </button>
+                    )}
+                  </div>
+                  
+                  {settings.knowledgeBase && (
+                    <div className="mt-2 text-[10px] font-mono text-lime-200/70">
+                      Current stored knowledge size: {settings.knowledgeBase.length.toLocaleString()} characters.
+                    </div>
+                  )}
+                </div>
+
               </div>
             </div>
             
