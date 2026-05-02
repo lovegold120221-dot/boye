@@ -197,6 +197,17 @@ const DEFAULT_SETTINGS: AgentSettings = {
 
 const GOOGLE_SERVICE_TOOLS =[
   {
+    name: 'fetch_url_content',
+    description: 'Fetch and read the text content of a URL or webpage. Use this when the user asks you to read a specific website or link.',
+    parameters: {
+      type: Type.OBJECT,
+      properties: {
+        url: { type: Type.STRING, description: 'The exact URL to fetch' }
+      },
+      required: ['url']
+    }
+  },
+  {
     name: 'read_knowledge_base',
     description: 'Read the contents of the user\'s uploaded custom Knowledge Base documents. Use this when the user asks about their custom data, projects, study notes, or business context.',
     parameters: {
@@ -244,7 +255,7 @@ const GOOGLE_SERVICE_TOOLS =[
   },
   {
     name: 'create_meeting_minutes',
-    description: 'Generate stunning HTML meeting minutes. Use this especially after analyzing a meeting transcript.',
+    description: 'Generate FULL PRODUCTION-READY HTML meeting minutes. Ensure elegant styling, comprehensive details, and avoid minimal samples.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -261,37 +272,37 @@ const GOOGLE_SERVICE_TOOLS =[
   },
   {
     name: 'create_invoice_document',
-    description: 'Generate a professional HTML invoice with auto-calculations. Save to drive and optionally email.',
+    description: 'Generate a FULL PRODUCTION-READY professional HTML invoice with realistic mock data and beautiful styling. Never output a stripped-down skeleton.',
     parameters: {
       type: Type.OBJECT,
       properties: {
         invoiceNumber: { type: Type.STRING },
         clientName: { type: Type.STRING },
         date: { type: Type.STRING },
-        items: { type: Type.STRING, description: 'JSON array of objects with description, quantity, price. E.g.[{"description":"Consulting", "quantity":2, "price":150}]' },
+        items: { type: Type.STRING, description: 'JSON array of objects with description, quantity, price. E.g. [{"description":"Consulting", "quantity":2, "price":150}]' },
         taxRate: { type: Type.NUMBER, description: 'Tax percentage, e.g. 5 for 5%.' },
         emailTo: { type: Type.STRING }
       },
-      required: ['clientName', 'items']
+      required:['clientName', 'items']
     }
   },
   {
     name: 'generate_data_dashboard',
-    description: 'Generate a standalone interactive HTML data dashboard using Chart.js.',
+    description: 'Generate a standalone interactive HTML data dashboard using Chart.js. Must be fully styled, responsive, and visually stunning.',
     parameters: {
       type: Type.OBJECT,
       properties: {
         title: { type: Type.STRING },
         chartType: { type: Type.STRING, description: 'bar, line, or pie' },
         labels: { type: Type.STRING, description: 'Comma separated labels, e.g. Jan,Feb,Mar' },
-        datasets: { type: Type.STRING, description: 'JSON array of datasets, e.g.[{"label":"Sales", "data":[10,20,30]}]' }
+        datasets: { type: Type.STRING, description: 'JSON array of datasets, e.g. [{"label":"Sales", "data":[10,20,30]}]' }
       },
-      required:['title', 'labels', 'datasets']
+      required: ['title', 'labels', 'datasets']
     }
   },
   {
     name: 'generate_project_gantt_chart',
-    description: 'Generate a standalone HTML project timeline using Mermaid.js.',
+    description: 'Generate a standalone HTML project timeline using Mermaid.js. Fully styled.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -303,7 +314,7 @@ const GOOGLE_SERVICE_TOOLS =[
   },
   {
     name: 'render_web_artifact',
-    description: 'Create and render any complete one-file HTML/CSS/JS artifact: animated slides, Three.js showcases, forms, landing pages, calculators, documents, prototypes, demos. The frontend saves it to chat as downloadable HTML.',
+    description: 'Create and render ANY complete one-file HTML/CSS/JS artifact: forms, landing pages, calculators, documents, prototypes. You MUST output a FULL PRODUCTION-READY code block, never a basic sample. Ensure beautiful UI, comprehensive CSS, and realistic placeholder data.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -322,12 +333,12 @@ const GOOGLE_SERVICE_TOOLS =[
         },
         html: {
           type: Type.STRING,
-          description: 'Complete standalone HTML file. Must include DOCTYPE, html, head, style, body, and script if needed. Must be directly openable in browser.',
+          description: 'Complete standalone HTML file. Must include DOCTYPE, html, head, style, body, and script if needed. Must be highly styled and fully implemented.',
         },
         saveToDrive: { type: Type.BOOLEAN, description: 'If true, upload the HTML artifact to the user drive.' },
         emailTo: { type: Type.STRING, description: 'Optional email address to send the HTML artifact to. Use current_user if requested.' },
       },
-      required:['title', 'html'],
+      required: ['title', 'html'],
     },
   },
   {
@@ -354,7 +365,7 @@ const GOOGLE_SERVICE_TOOLS =[
         cc: { type: Type.STRING, description: 'Optional CC recipients.' },
         bcc: { type: Type.STRING, description: 'Optional BCC recipients.' },
       },
-      required:['to', 'subject', 'body'],
+      required: ['to', 'subject', 'body'],
     },
   },
   {
@@ -369,7 +380,7 @@ const GOOGLE_SERVICE_TOOLS =[
         cc: { type: Type.STRING, description: 'Optional CC recipients.' },
         bcc: { type: Type.STRING, description: 'Optional BCC recipients.' },
       },
-      required: ['to', 'subject', 'body'],
+      required:['to', 'subject', 'body'],
     },
   },
   {
@@ -399,7 +410,7 @@ const GOOGLE_SERVICE_TOOLS =[
         description: { type: Type.STRING, description: 'Optional description.' },
         addMeet: { type: Type.BOOLEAN, description: 'Whether to add a video meeting link.' },
       },
-      required:['title', 'startTime', 'endTime'],
+      required: ['title', 'startTime', 'endTime'],
     },
   },
   {
@@ -497,8 +508,7 @@ const GOOGLE_SERVICE_TOOLS =[
   },
   {
     name: 'create_contract_document',
-    description:
-      'Create a STUNNING HTML contract document, save it as a file in the user drive, optionally email it, and return a downloadable visually rich template in chat.',
+    description: 'Create a STUNNING, PRODUCTION-READY HTML contract document. You must generate a fully-featured, beautifully styled legal contract. Never use a minimal sample layout.',
     parameters: {
       type: Type.OBJECT,
       properties: {
@@ -511,7 +521,7 @@ const GOOGLE_SERVICE_TOOLS =[
         terms: { type: Type.STRING, description: 'Important terms, scope, payment, obligations, duration, termination, confidentiality, etc.' },
         emailTo: { type: Type.STRING, description: 'Optional email address to send the stunning HTML contract to. Use current_user if requested.' },
       },
-      required: ['title', 'contractType', 'partyA', 'partyB', 'terms'],
+      required:['title', 'contractType', 'partyA', 'partyB', 'terms'],
     },
   },
 ];
@@ -601,7 +611,6 @@ function makeHtmlArtifactFile(html: string, filenameBase: string) {
 function makeBlobDownloadData(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-
     reader.onload = () => resolve(String(reader.result));
     reader.onerror = reject;
     reader.readAsDataURL(blob);
@@ -649,7 +658,6 @@ function buildEmailRaw({
       '',
       body,
     ].join('\r\n');
-
     return base64UrlEncode(raw);
   }
 
@@ -679,11 +687,9 @@ function buildEmailRaw({
 
 function readableDateRange(date?: string, timeMin?: string, timeMax?: string) {
   const now = new Date();
-
   if (timeMin && timeMax) {
     return { timeMin, timeMax };
   }
-
   const target = date ? new Date(date) : now;
   const start = new Date(target);
   start.setHours(0, 0, 0, 0);
@@ -755,9 +761,7 @@ function buildInvoiceHtml(args: any) {
   let parsedItems =[];
   try {
     parsedItems = typeof args.items === 'string' ? JSON.parse(args.items) : args.items;
-  } catch (e) {
-    // ignore
-  }
+  } catch (e) {}
 
   if (!Array.isArray(parsedItems)) parsedItems =[];
   
@@ -837,13 +841,8 @@ function buildInvoiceHtml(args: any) {
 function buildDashboardHtml(args: any) {
   let labels = [];
   let datasets =[];
-  try {
-    labels = typeof args.labels === 'string' ? args.labels.split(',') : args.labels;
-  } catch (e) {}
-
-  try {
-    datasets = typeof args.datasets === 'string' ? JSON.parse(args.datasets) : args.datasets;
-  } catch (e) {}
+  try { labels = typeof args.labels === 'string' ? args.labels.split(',') : args.labels; } catch (e) {}
+  try { datasets = typeof args.datasets === 'string' ? JSON.parse(args.datasets) : args.datasets; } catch (e) {}
   
   return `<!DOCTYPE html>
 <html>
@@ -1493,10 +1492,10 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState<AgentSettings>(DEFAULT_SETTINGS);
-  const [authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
+  const[authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
   const [authName, setAuthName] = useState('');
   const [authEmail, setAuthEmail] = useState('');
-  const [authPassword, setAuthPassword] = useState('');
+  const[authPassword, setAuthPassword] = useState('');
   const [authConfirmPassword, setAuthConfirmPassword] = useState('');
   const[authBusy, setAuthBusy] = useState(false);
   const [authMessage, setAuthMessage] = useState<{ type: 'error' | 'success' | 'info'; text: string } | null>(null);
@@ -1868,7 +1867,7 @@ function BeatriceAgent({
   initialSettings: AgentSettings; 
 }) {
   const [isActive, setIsActive] = useState(false);
-  const [connecting, setConnecting] = useState(false);
+  const[connecting, setConnecting] = useState(false);
   const [isAgentSpeaking, setIsAgentSpeaking] = useState(false);
   const [micLevel, setMicLevel] = useState(0);
   const[micBands, setMicBands] = useState<number[]>(Array(20).fill(0));
@@ -1943,7 +1942,7 @@ function BeatriceAgent({
     const historyRef = query(ref(rtdb, 'users/' + user.uid + '/messages'), orderByChild('timestamp'), limitToLast(160));
     
     const unsub = onValue(historyRef, (snap) => {
-      const msgs: string[] =[]; 
+      const msgs: string[] = []; 
       const rawMsgs: ChatMessage[] =[];
       
       snap.forEach(child => { 
@@ -1976,7 +1975,7 @@ function BeatriceAgent({
 
   const selectedVoiceMeta = useMemo(() => {
     return GEMINI_LIVE_VOICE_OPTIONS.find(v => v.id === settings.selectedVoice) || GEMINI_LIVE_VOICE_OPTIONS[0];
-  },[settings.selectedVoice]);
+  }, [settings.selectedVoice]);
 
   const saveMessage = (role: 'user' | 'model', text: string, extra?: Partial<ChatMessage>) => {
     const clean = text.trim(); 
@@ -2215,7 +2214,7 @@ function BeatriceAgent({
 
   const uploadTextFileToDrive = async (fileName: string, content: string, mimeType = 'text/plain', folderId?: string) => {
     const metadata: any = { name: fileName }; 
-    if (folderId) metadata.parents =[folderId];
+    if (folderId) metadata.parents = [folderId];
     
     const boundary = `boundary_${Date.now()}`;
     const multipartBody = 
@@ -2287,6 +2286,42 @@ function BeatriceAgent({
 
     try {
       switch (toolName) {
+        case 'fetch_url_content': {
+          try {
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(args.url)}`;
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const data = await response.json();
+            if (!data.contents) throw new Error("Could not retrieve text from this URL. The site might be blocking automated access.");
+            
+            const doc = new DOMParser().parseFromString(data.contents, 'text/html');
+            // Remove scripts, styles, and SVGs to prevent AI from reading raw code
+            doc.querySelectorAll('script, style, svg').forEach(el => el.remove());
+            
+            const text = doc.body?.textContent || "";
+            const cleanText = text.replace(/\s+/g, ' ').trim().slice(0, 15000);
+            
+            if (!cleanText) throw new Error("No readable text found on the page.");
+
+            return { 
+              toolName, 
+              executedAt, 
+              status: 'completed', 
+              url: args.url, 
+              contentPreview: cleanText 
+            };
+          } catch (error: any) {
+            return {
+              toolName,
+              executedAt,
+              status: 'failed',
+              url: args.url,
+              error: `Failed to fetch URL. Tell the user the website might be blocking access or is unavailable. Error: ${error.message}`
+            };
+          }
+        }
+
         case 'read_knowledge_base': {
           return { 
             toolName, 
@@ -2674,6 +2709,7 @@ function BeatriceAgent({
         historyContext,
         `Current physical location context: Baguio, Philippines. Use this if the user asks for weather, places, directions, etc., without specifying a city.`,
         `CRITICAL DIRECTIVE FOR TOOL EXECUTION: When you trigger a tool (like drafting a contract, generating HTML, searching Drive, searching Maps, sending an email, etc.), YOU MUST NOT GO SILENT. You MUST continuously "talk to yourself" out loud in a highly natural, slightly entertaining human monologue while working. Use filler words, express thoughts, and narrate your process internally. Example: "Mmm, so I'm generating this now... okay, let me search Maps... alright... Oh my gosh, wait, okay... let me try again. Shocks. Oh, yeah... almost done..." Make it sound exactly like a normal office worker muttering to themselves while focused on a task. KEEP TALKING while the tool processes!`,
+        `CRITICAL REQUIREMENT FOR DOCUMENTS & HTML: If the user asks for a document, invoice, contract, dashboard, or HTML artifact—even if they explicitly say "sample" or "draft"—you MUST NEVER provide a stripped-down skeleton. You MUST ALWAYS generate a fully-featured, beautifully designed, completely styled, and production-ready HTML document with highly realistic, detailed placeholder data. Include extensive CSS for modern, elegant, enterprise-grade UI.`,
         `Product brand: VEP, which means Virtual Employee Persona. Default persona: Beatrice, Boss Jo Lernout's secretary.`,
         `User preferred name: ${settings.userName}.`,
         `Agent visible name: ${settings.agentName}.`,
@@ -2701,7 +2737,10 @@ function BeatriceAgent({
           systemInstruction,
           inputAudioTranscription: {},
           outputAudioTranscription: {},
-          tools:[{ functionDeclarations: GOOGLE_SERVICE_TOOLS }],
+          tools:[
+            { googleSearch: {} }, // Natively enables Live Web Search Grounding
+            { functionDeclarations: GOOGLE_SERVICE_TOOLS }
+          ],
         },
         callbacks: {
           onopen: () => console.log('Live session opened.'),
@@ -3041,7 +3080,7 @@ function BeatriceAgent({
           if (sessionRef.current && aiRef.current) {
             try {
               const result = await aiRef.current.models.generateContent({
-                model: 'gemini-2.5-flash',
+                model: 'gemini-2.0-flash', // Corrected Model Name
                 contents:[
                   "Describe this image precisely, accurately, and in high detail. Do not make anything up. Just state exactly what is visible.",
                   { inlineData: { mimeType: 'image/jpeg', data: base64Data } }
@@ -3058,6 +3097,70 @@ function BeatriceAgent({
         img.src = e.target?.result as string;
       };
       reader.readAsDataURL(file);
+
+    } else if (fileType.startsWith('video/')) {
+      // BULLETPROOF VIDEO UPLOAD HANDLING
+      const video = document.createElement('video');
+      const objectUrl = URL.createObjectURL(file);
+      video.src = objectUrl;
+      video.muted = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+
+      video.onloadedmetadata = () => {
+        // Seek to 1 second in, or halfway if it's very short
+        video.currentTime = Math.min(1, video.duration / 2 || 0.5);
+      };
+
+      video.onseeked = async () => {
+        try {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 512;
+          const scaleSize = Math.min(1, MAX_WIDTH / video.videoWidth);
+          canvas.width = video.videoWidth * scaleSize;
+          canvas.height = video.videoHeight * scaleSize;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+          
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          const base64Data = dataUrl.split(',')[1];
+          
+          saveMessage('user', `[Attached Video: ${safeName}]`, {
+            fileName: safeName,
+            fileType,
+            fileDataUrl: dataUrl // Display thumbnail in chat
+          });
+          
+          updateLiveTranscript('user', `Attached Video: ${safeName}`, 3000);
+          
+          if (sessionRef.current && aiRef.current) {
+            const result = await aiRef.current.models.generateContent({
+              model: 'gemini-2.0-flash', // Corrected Model Name
+              contents:[
+                "Describe this video frame precisely, accurately, and in high detail. Pay attention to action, context, setting, and subjects. Do not make anything up.",
+                { inlineData: { mimeType: 'image/jpeg', data: base64Data } }
+              ]
+            });
+            
+            const accurateDescription = result.text;
+            sendTextToLive(`[SYSTEM NOTIFICATION]: The user just uploaded a video named ${safeName}. Here is the verified, exact visual description of a keyframe from the middle of the video: "${accurateDescription}". Please respond to the user about this video naturally.`);
+          }
+        } catch (err) {
+          console.error("Video processing error:", err);
+          sendTextToLive(`[SYSTEM NOTIFICATION]: The user uploaded a video named ${safeName}, but the visual processing failed. Tell the user you can't see the video clearly and ask them to describe it.`);
+        } finally {
+          URL.revokeObjectURL(objectUrl);
+          video.remove();
+        }
+      };
+
+      video.onerror = () => {
+        saveMessage('user', `[Attached Video: ${safeName}]`, { fileName: safeName, fileType });
+        sendTextToLive(`[SYSTEM NOTIFICATION]: The user uploaded a video named ${safeName}, but the browser could not decode it. Ask them to describe it.`);
+        URL.revokeObjectURL(objectUrl);
+        video.remove();
+      };
+
     } else if (fileType.startsWith('text/') || safeName.endsWith('.txt') || safeName.endsWith('.md') || safeName.endsWith('.csv') || safeName.endsWith('.json')) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -3083,7 +3186,7 @@ function BeatriceAgent({
       updateLiveTranscript('user', `Attached File: ${safeName}`, 3000);
       
       if (sessionRef.current) {
-        sendTextToLive(`${settings.userName} attached a file named "${safeName}" with type "${fileType}". Acknowledge it normally. Say you might need a specific tool to read this format if it's not text or an image.`);
+        sendTextToLive(`${settings.userName} attached a file named "${safeName}" with type "${fileType}". Acknowledge it normally. Say you might need a specific tool to read this format if it's not text, image, or video.`);
       }
     }
   };
@@ -3156,12 +3259,12 @@ ${transcript}
 </transcript>
 
 Tasks:
-1. Generate a comprehensive meeting minutes document using the 'create_meeting_minutes' tool.
+1. Generate a comprehensive meeting minutes document using the 'create_meeting_minutes' tool. Make it FULL PRODUCTION grade.
 2. If there are explicit tasks or follow-ups assigned to the user (${settings.userName}), use the 'tasks_create' tool to add them to their schedule.
 3. Return a brief conversational summary of what you did.`;
 
         const response = await aiRef.current.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-2.0-flash', // Corrected Model Name
             contents: prompt,
             config: {
                 tools: [{ functionDeclarations: GOOGLE_SERVICE_TOOLS }],
